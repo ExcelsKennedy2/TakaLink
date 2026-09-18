@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collector Dashboard | TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+
+    <h2>Collector Dashboard</h2>
+
+    <p>
+        Welcome,
+        {{ user.first_name|default:user.username }}!
+    </p>
+
+    <p>You are logged in as a collector.</p>
+
+    {% if user.collector_profile %}
+        <h3>Collector Information</h3>
+
+        <p>
+            Phone:
+            {{ user.collector_profile.phone_number }}
+        </p>
+
+        {% if user.collector_profile.business %}
+            <p>
+                Business:
+                {{ user.collector_profile.business.name }}
+            </p>
+        {% endif %}
+
+        <p>
+            Verification:
+            {% if user.collector_profile.verification_status %}
+                Verified
+            {% else %}
+                Pending verification
+            {% endif %}
+        </p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'logout' %}">Logout</a>
+    </p>
+
+</body>
+</html>

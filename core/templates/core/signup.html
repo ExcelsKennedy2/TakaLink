@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+    <h2>{{ title }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+
+                {% if field.help_text %}
+                    <small>{{ field.help_text }}</small>
+                {% endif %}
+
+                {% for error in field.errors %}
+                    <br>
+                    <span>{{ error }}</span>
+                {% endfor %}
+            </p>
+        {% endfor %}
+
+        <button type="submit">Create Account</button>
+    </form>
+
+    <p>
+        Already have an account?
+        <a href="{% url 'login' %}">Login</a>
+    </p>
+
+    {% if account_type == "resident" %}
+        <p>
+            Register as a
+            <a href="{% url 'signup' %}?type=collector">Collector instead</a>
+        </p>
+    {% else %}
+        <p>
+            Register as a
+            <a href="{% url 'signup' %}?type=resident">Resident instead</a>
+        </p>
+    {% endif %}
+
+</body>
+</html>

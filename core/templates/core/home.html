@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+
+    <p>Smart waste collection for cleaner communities.</p>
+
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.first_name|default:user.username }}!</p>
+
+        <a href="{% url 'dashboard' %}">Go to Dashboard</a>
+        |
+        <a href="{% url 'logout' %}">Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        |
+        <a href="{% url 'signup' %}?type=resident">Join as Resident</a>
+        |
+        <a href="{% url 'signup' %}?type=collector">Join as Collector</a>
+    {% endif %}
+
+</body>
+</html>

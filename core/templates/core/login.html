@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+    <h2>Login</h2>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <p>
+            <label for="username">Username</label><br>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                required
+            >
+        </p>
+
+        <p>
+            <label for="password">Password</label><br>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+            >
+        </p>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <p>
+        Don't have an account?
+        <a href="{% url 'signup' %}?type=resident">Create a resident account</a>
+    </p>
+
+    <p>
+        <a href="{% url 'home' %}">Back to TakaLink</a>
+    </p>
+
+</body>
+</html>

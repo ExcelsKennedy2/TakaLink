@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resident Dashboard | TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+
+    <h2>Resident Dashboard</h2>
+
+    <p>
+        Welcome,
+        {{ user.first_name|default:user.username }}!
+    </p>
+
+    <p>You are logged in as a resident.</p>
+
+    {% if user.resident_profile %}
+        <h3>Your Profile</h3>
+
+        <p>
+            Phone:
+            {{ user.resident_profile.phone_number }}
+        </p>
+
+        <p>
+            Points:
+            {{ user.resident_profile.points }}
+        </p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'logout' %}">Logout</a>
+    </p>
+
+</body>
+</html>
