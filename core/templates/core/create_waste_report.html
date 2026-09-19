@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Waste | TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+
+    <h2>Report Waste Problem</h2>
+
+    <p>
+        Help keep your community clean by reporting illegal dumping,
+        overflowing waste, or other waste-related problems.
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Submit Report</button>
+    </form>
+
+    <p>
+        <a href="{% url 'resident_dashboard' %}">
+            Back to Dashboard
+        </a>
+    </p>
+
+</body>
+</html>

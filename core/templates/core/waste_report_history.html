@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste Report History | TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+
+    <h2>Waste Report History</h2>
+
+    <p>
+        View the waste problems you have reported and their current status.
+    </p>
+
+    {% if reports %}
+        <table border="1" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Report #</th>
+                    <th>Description</th>
+                    <th>Location</th>
+                    <th>Image</th>
+                    <th>Status</th>
+                    <th>Date Reported</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for report in reports %}
+                    <tr>
+                        <td>#{{ report.id }}</td>
+
+                        <td>
+                            {{ report.description }}
+                        </td>
+
+                        <td>
+                            {{ report.location }}
+                        </td>
+
+                        <td>
+                            {% if report.image %}
+                                <a href="{{ report.image.url }}" target="_blank">
+                                    View Image
+                                </a>
+                            {% else %}
+                                No image
+                            {% endif %}
+                        </td>
+
+                        <td>
+                            {{ report.get_status_display }}
+                        </td>
+
+                        <td>
+                            {{ report.created_at|date:"d M Y, H:i" }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>
+            You have not submitted any waste reports yet.
+        </p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'create_waste_report' %}">
+            Report a Waste Problem
+        </a>
+    </p>
+
+    <p>
+        <a href="{% url 'resident_dashboard' %}">
+            Back to Dashboard
+        </a>
+    </p>
+
+</body>
+</html>

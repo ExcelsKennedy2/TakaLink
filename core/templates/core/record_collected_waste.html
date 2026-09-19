@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Record Collected Waste - TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+
+    <h2>Record Collected Waste</h2>
+
+    <p>
+        Collection #{{ collection.id }}
+    </p>
+
+    <p>
+        Resident:
+        {{ collection.waste_request.resident.get_full_name }}
+    </p>
+
+    <h3>Add Collected Material</h3>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Add Waste Item
+        </button>
+    </form>
+
+    <hr>
+
+    <h3>Recorded Waste</h3>
+
+    {% if items %}
+        <table border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.category.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.unit }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No waste items recorded yet.</p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'collector_active_jobs' %}">
+            ← Back to Active Jobs
+        </a>
+    </p>
+
+</body>
+</html>

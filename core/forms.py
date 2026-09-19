@@ -6,6 +6,8 @@ from .models import (
     CollectorProfile,
     Business,
     WasteRequest,
+    WasteReport,
+    CollectionItem,
 )
 
 
@@ -113,3 +115,35 @@ class WasteRequestForm(forms.ModelForm):
                 attrs={"type": "datetime-local"}
             ),
         }
+
+class WasteReportForm(forms.ModelForm):
+    class Meta:
+        model = WasteReport
+        fields = (
+            "description",
+            "location",
+            "image",
+        )
+        widgets = {
+            "description": forms.Textarea(
+                attrs={
+                    "rows": 5,
+                    "placeholder": "Describe the waste problem..."
+                }
+            ),
+            "location": forms.TextInput(
+                attrs={
+                    "placeholder": "Where is the waste problem?"
+                }
+            ),
+        }
+
+class CollectionItemForm(forms.ModelForm):
+    class Meta:
+        model = CollectionItem
+        fields = (
+            "category",
+            "quantity",
+            "unit",
+            "is_correctly_sorted",
+        )

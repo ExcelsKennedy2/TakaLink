@@ -24,6 +24,59 @@ class ResidentProfile(models.Model):
     address = models.CharField(max_length=255, blank=True)
     location = models.CharField(max_length=255, blank=True)
     points = models.PositiveIntegerField(default=0)
+    successful_collection_streak = models.PositiveIntegerField(default=0)
+
+    @property
+    def green_level(self):
+        if self.points >= 2500:
+            return "Planet Protector"
+        elif self.points >= 1000:
+            return "Eco Guardian"
+        elif self.points >= 500:
+            return "Green Champion"
+        elif self.points >= 100:
+            return "Recycling Hero"
+        else:
+            return "Eco Starter"
+
+    @property
+    def next_green_level(self):
+        if self.points < 100:
+            return "Recycling Hero"
+        elif self.points < 500:
+            return "Green Champion"
+        elif self.points < 1000:
+            return "Eco Guardian"
+        elif self.points < 2500:
+            return "Planet Protector"
+        else:
+            return "Max Level"
+
+    @property
+    def points_to_next_level(self):
+        if self.points < 100:
+            return 100 - self.points
+        elif self.points < 500:
+            return 500 - self.points
+        elif self.points < 1000:
+            return 1000 - self.points
+        elif self.points < 2500:
+            return 2500 - self.points
+        else:
+            return 0
+
+    @property
+    def green_progress(self):
+        if self.points >= 2500:
+            return 100
+        elif self.points >= 1000:
+            return ((self.points - 1000) / 1500) * 100
+        elif self.points >= 500:
+            return ((self.points - 500) / 500) * 100
+        elif self.points >= 100:
+            return ((self.points - 100) / 400) * 100
+        else:
+            return (self.points / 100) * 100
 
     def __str__(self):
         return self.user.get_full_name() or self.user.username
@@ -68,6 +121,7 @@ class CollectorProfile(models.Model):
 class WasteCategory(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
+    is_recyclable = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -156,6 +210,7 @@ class CollectionItem(models.Model):
         decimal_places=2,
     )
     unit = models.CharField(max_length=20, default="kg")
+    is_correctly_sorted = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.category.name} - {self.quantity} {self.unit}"

@@ -7,9 +7,11 @@ from .forms import (
     ResidentSignUpForm,
     CollectorSignUpForm,
     WasteRequestForm,
+    WasteReportForm,
+    CollectionItemForm,
 )
 
-from .models import WasteRequest, Collection
+from .models import WasteRequest, Collection, WasteReport, Reward, CollectionItem
 
 def home(request):
     return render(request, "core/home.html")
@@ -90,15 +92,21 @@ def dashboard(request):
 
     return redirect("home")
 
+# Resident Views
 
 @login_required
 def resident_dashboard(request):
     if request.user.role != request.user.Role.RESIDENT:
         return redirect("dashboard")
 
+    resident_profile = request.user.resident_profile
+
     return render(
         request,
         "core/resident_dashboard.html",
+        {
+            "resident_profile": resident_profile,
+        },
     )
 
 @login_required
@@ -139,6 +147,66 @@ def collection_history(request):
         },
     )
 
+@login_required
+def create_waste_report(request):
+    if request.user.role != request.user.Role.RESIDENT:
+        return redirect("dashboard")
+
+    if request.method == "POST":
+        form = WasteReportForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            waste_report = form.save(commit=False)
+            waste_report.resident = request.user
+            waste_report.save()
+
+            return redirect("resident_dashboard")
+    else:
+        form = WasteReportForm()
+
+    return render(
+        request,
+        "core/create_waste_report.html",
+        {
+            "form": form,
+        },
+    )
+
+@login_required
+def waste_report_history(request):
+    if request.user.role != request.user.Role.RESIDENT:
+        return redirect("dashboard")
+
+    reports = WasteReport.objects.filter(
+        resident=request.user
+    ).order_by("-created_at")
+
+    return render(
+        request,
+        "core/waste_report_history.html",
+        {
+            "reports": reports,
+        },
+    )
+
+@login_required
+def green_points_history(request):
+    if request.user.role != request.user.Role.RESIDENT:
+        return redirect("dashboard")
+
+    rewards = Reward.objects.filter(
+        resident=request.user
+    ).order_by("-created_at")
+
+    return render(
+        request,
+        "core/green_points_history.html",
+        {
+            "rewards": rewards,
+        },
+    )
+
+# Collector Views
 
 @login_required
 def collector_dashboard(request):
@@ -219,6 +287,41 @@ def collector_active_jobs(request):
     )
 
 @login_required
+def record_collected_waste(request, collection_id):
+    if request.user.role != request.user.Role.COLLECTOR:
+        return redirect("dashboard")
+
+    collection = Collection.objects.get(
+        id=collection_id,
+        collector=request.user.collector_profile,
+        status=Collection.Status.IN_PROGRESS,
+    )
+
+    if request.method == "POST":
+        form = CollectionItemForm(request.POST)
+
+        if form.is_valid():
+            collection_item = form.save(commit=False)
+            collection_item.collection = collection
+            collection_item.save()
+
+            return redirect("record_collected_waste", collection_id=collection.id)
+    else:
+        form = CollectionItemForm()
+
+    items = collection.items.order_by("-id")
+
+    return render(
+        request,
+        "core/record_collected_waste.html",
+        {
+            "collection": collection,
+            "form": form,
+            "items": items,
+        },
+    )
+
+@login_required
 def start_collection(request, collection_id):
     if request.user.role != request.user.Role.COLLECTOR:
         return redirect("dashboard")
@@ -251,6 +354,104 @@ def complete_collection(request, collection_id):
 
     collection.waste_request.status = WasteRequest.Status.COLLECTED
     collection.waste_request.save()
+
+    resident = collection.waste_request.resident
+    resident_profile = resident.resident_profile
+    # Increase successful collection streak
+    resident_profile.successful_collection_streak += 1
+
+    # Award points for successful waste collection
+    Reward.objects.create(
+        resident=resident,
+        points=10,
+        reason="Successful waste collection",
+    )
+
+    resident_profile.points += 10
+
+    # Award bonus points for recyclable waste
+    has_recyclable_waste = collection.items.filter(
+        category__is_recyclable=True
+    ).exists()
+
+    if has_recyclable_waste:
+        Reward.objects.create(
+            resident=resident,
+            points=5,
+            reason="Recyclable waste handed over",
+        )
+
+        resident_profile.points += 5
+
+    # Award bonus points for correctly sorted waste
+    has_correctly_sorted_waste = collection.items.filter(
+        is_correctly_sorted=True
+    ).exists()
+
+    if has_correctly_sorted_waste:
+        Reward.objects.create(
+            resident=resident,
+            points=5,
+            reason="Correctly sorted waste",
+        )
+
+        resident_profile.points += 5
+
+    # Check for 5 successful collection milestone
+    completed_collection_count = Collection.objects.filter(
+        waste_request__resident=resident,
+        status=Collection.Status.COMPLETED,
+    ).count()
+
+    five_collection_bonus_reason = "5 successful collections bonus"
+
+    if (
+        completed_collection_count >= 5
+        and not Reward.objects.filter(
+            resident=resident,
+            reason=five_collection_bonus_reason,
+        ).exists()
+    ):
+        Reward.objects.create(
+            resident=resident,
+            points=25,
+            reason=five_collection_bonus_reason,
+        )
+
+        resident_profile.points += 25
+
+    # Check for 10 successful collection milestone
+    ten_collection_bonus_reason = "10 successful collections bonus"
+
+    if (
+        completed_collection_count >= 10
+        and not Reward.objects.filter(
+            resident=resident,
+            reason=ten_collection_bonus_reason,
+        ).exists()
+    ):
+        Reward.objects.create(
+            resident=resident,
+            points=50,
+            reason=ten_collection_bonus_reason,
+        )
+
+        resident_profile.points += 50
+
+    # Check for 4 consecutive successful collections
+    if resident_profile.successful_collection_streak >= 4:
+        streak_bonus_reason = "4 consecutive successful collections bonus"
+
+        Reward.objects.create(
+            resident=resident,
+            points=20,
+            reason=streak_bonus_reason,
+        )
+
+        resident_profile.points += 20
+        resident_profile.successful_collection_streak = 0
+
+    resident_profile.save()
 
     return redirect("collector_completed_jobs")
 

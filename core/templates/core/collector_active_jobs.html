@@ -69,6 +69,11 @@
                 </p>
 
             {% elif collection.status == "IN_PROGRESS" %}
+                <p>
+                    <a href="{% url 'record_collected_waste' collection.id %}">
+                        Record Collected Waste
+                    </a>
+                </p>
 
                 <p>
                     <a href="{% url 'complete_collection' collection.id %}">

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Green Points History - TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+
+    <h2>Green Points History</h2>
+
+    <p>
+        Total Points:
+        <strong>{{ request.user.resident_profile.points }}</strong>
+    </p>
+
+    {% if rewards %}
+        <table border="1" cellpadding="8">
+            <thead>
+                <tr>
+                    <th>Points</th>
+                    <th>Reason</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for reward in rewards %}
+                    <tr>
+                        <td>+{{ reward.points }}</td>
+                        <td>{{ reward.reason }}</td>
+                        <td>{{ reward.created_at|date:"d M Y, H:i" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You haven't earned any Green Points yet.</p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'resident_dashboard' %}">
+            ← Back to Dashboard
+        </a>
+    </p>
+
+</body>
+</html>
