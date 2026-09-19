@@ -44,6 +44,24 @@
     {% endif %}
 
     <p>
+        <a href="{% url 'collector_pending_jobs' %}">
+            View Pending Jobs
+        </a>
+    </p>
+
+    <p>
+        <a href="{% url 'collector_active_jobs' %}">
+            View Active Jobs
+        </a>
+    </p>
+
+    <p>
+        <a href="{% url 'collector_completed_jobs' %}">
+            View Completed Jobs
+        </a>
+    </p>
+
+    <p>
         <a href="{% url 'logout' %}">Logout</a>
     </p>
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Jobs | TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+
+    <h2>Completed Collection Jobs</h2>
+
+    <p>
+        Welcome,
+        {{ user.first_name|default:user.username }}!
+    </p>
+
+    <p>
+        <a href="{% url 'collector_dashboard' %}">
+            Back to Dashboard
+        </a>
+    </p>
+
+    <hr>
+
+    {% if collections %}
+
+        {% for collection in collections %}
+
+            <h3>Collection #{{ collection.id }}</h3>
+
+            <p>
+                <strong>Request:</strong>
+                #{{ collection.waste_request.id }}
+            </p>
+
+            <p>
+                <strong>Category:</strong>
+                {{ collection.waste_request.category|default:"Not specified" }}
+            </p>
+
+            <p>
+                <strong>Description:</strong>
+                {{ collection.waste_request.description|default:"No description" }}
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                {{ collection.waste_request.location }}
+            </p>
+
+            <p>
+                <strong>Scheduled Date:</strong>
+                {{ collection.scheduled_date }}
+            </p>
+
+            <p>
+                <strong>Completed At:</strong>
+                {{ collection.completed_at }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                {{ collection.get_status_display }}
+            </p>
+
+            <hr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            You have not completed any collection jobs yet.
+        </p>
+
+    {% endif %}
+
+    <p>
+        <a href="{% url 'logout' %}">Logout</a>
+    </p>
+
+</body>
+</html>
