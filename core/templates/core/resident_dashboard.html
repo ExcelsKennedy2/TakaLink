@@ -18,6 +18,20 @@
 
     <p>You are logged in as a resident.</p>
 
+    <h3>Waste Collection</h3>
+
+    <p>
+        <a href="{% url 'create_collection' %}">
+            Create Collection Request
+        </a>
+    </p>
+
+    <p>
+        <a href="{% url 'collection_history' %}">
+            View Collection History
+        </a>
+    </p>
+
     {% if user.resident_profile %}
         <h3>Your Profile</h3>
 

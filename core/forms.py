@@ -1,7 +1,12 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-
-from .models import User, ResidentProfile, CollectorProfile, Business
+from .models import (
+    User,
+    ResidentProfile,
+    CollectorProfile,
+    Business,
+    WasteRequest,
+)
 
 
 class ResidentSignUpForm(UserCreationForm):
@@ -93,3 +98,18 @@ class CollectorSignUpForm(UserCreationForm):
             )
 
         return user
+
+class WasteRequestForm(forms.ModelForm):
+    class Meta:
+        model = WasteRequest
+        fields = (
+            "category",
+            "description",
+            "location",
+            "requested_date",
+        )
+        widgets = {
+            "requested_date": forms.DateTimeInput(
+                attrs={"type": "datetime-local"}
+            ),
+        }

@@ -17,6 +17,16 @@ urlpatterns = [
         name="resident_dashboard",
     ),
     path(
+    "resident/create-collection/",
+    views.create_collection,
+    name="create_collection",
+    ),
+    path(
+    "resident/collection-history/",
+    views.collection_history,
+    name="collection_history",
+    ),
+    path(
         "collector/dashboard/",
         views.collector_dashboard,
         name="collector_dashboard",

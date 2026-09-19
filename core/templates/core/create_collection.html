@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Collection | TakaLink</title>
+</head>
+<body>
+
+    <h1>♻️ TakaLink</h1>
+
+    <h2>Create Waste Collection Request</h2>
+
+    <p>
+        Welcome,
+        {{ user.first_name|default:user.username }}!
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">
+            Submit Collection Request
+        </button>
+    </form>
+
+    <p>
+        <a href="{% url 'resident_dashboard' %}">
+            Back to Dashboard
+        </a>
+    </p>
+
+</body>
+</html>

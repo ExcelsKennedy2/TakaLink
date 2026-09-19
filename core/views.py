@@ -2,7 +2,11 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
-from .forms import ResidentSignUpForm, CollectorSignUpForm
+from .forms import (
+    ResidentSignUpForm,
+    CollectorSignUpForm,
+    WasteRequestForm,
+)
 
 
 def home(request):
@@ -93,6 +97,44 @@ def resident_dashboard(request):
     return render(
         request,
         "core/resident_dashboard.html",
+    )
+
+@login_required
+def create_collection(request):
+    if request.user.role != request.user.Role.RESIDENT:
+        return redirect("dashboard")
+
+    if request.method == "POST":
+        form = WasteRequestForm(request.POST)
+
+        if form.is_valid():
+            waste_request = form.save(commit=False)
+            waste_request.resident = request.user
+            waste_request.save()
+
+            return redirect("resident_dashboard")
+    else:
+        form = WasteRequestForm()
+
+    return render(
+        request,
+        "core/create_collection.html",
+        {"form": form},
+    )
+
+@login_required
+def collection_history(request):
+    if request.user.role != request.user.Role.RESIDENT:
+        return redirect("dashboard")
+
+    requests = request.user.waste_requests.order_by("-created_at")
+
+    return render(
+        request,
+        "core/collection_history.html",
+        {
+            "requests": requests,
+        },
     )
 
 
