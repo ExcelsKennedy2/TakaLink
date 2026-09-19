@@ -1,5 +1,9 @@
 from django.contrib import admin
 
+admin.site.site_header = "TakaLink Administration"
+admin.site.site_title = "TakaLink Admin"
+admin.site.index_title = "TakaLink Management"
+
 from .models import (
     AIClassification,
     Business,
