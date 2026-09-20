@@ -55,6 +55,26 @@
                 {{ waste_request.get_status_display }}
             </p>
 
+            {% if waste_request.ai_classification %}
+                <p>
+                    <strong>🤖 Taka AI Classification:</strong>
+                    {{ waste_request.ai_classification.predicted_category|default:"Unable to classify" }}
+                </p>
+
+                {% if waste_request.ai_classification.confidence %}
+                    <p>
+                        <strong>Demo Confidence:</strong>
+                        {{ waste_request.ai_confidence_percentage|floatformat:0 }}%
+                    </p>
+                {% endif %}
+
+                <p>
+                    <small>
+                        AI Classification Demo
+                    </small>
+                </p>
+            {% endif %}
+
             <p>
                 <strong>Submitted:</strong>
                 {{ waste_request.created_at }}

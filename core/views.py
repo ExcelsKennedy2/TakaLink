@@ -11,7 +11,8 @@ from .forms import (
     CollectionItemForm,
 )
 
-from .models import WasteRequest, Collection, WasteReport, Reward, CollectionItem, Notification
+from .models import WasteRequest, Collection, WasteReport, Reward, CollectionItem, Notification, AIClassification
+from .ai_service import classify_waste
 
 def home(request):
     return render(request, "core/home.html")
@@ -127,6 +128,16 @@ def create_collection(request):
             waste_request.resident = request.user
             waste_request.save()
 
+            predicted_category, confidence = classify_waste(
+                waste_request.description
+            )
+
+            AIClassification.objects.create(
+                waste_request=waste_request,
+                predicted_category=predicted_category,
+                confidence=confidence,
+            )
+
             return redirect("resident_dashboard")
     else:
         form = WasteRequestForm()
@@ -142,7 +153,17 @@ def collection_history(request):
     if request.user.role != request.user.Role.RESIDENT:
         return redirect("dashboard")
 
-    requests = request.user.waste_requests.order_by("-created_at")
+    requests = (
+        request.user.waste_requests
+        .select_related("category", "ai_classification__predicted_category")
+        .order_by("-created_at")
+    )
+
+    for waste_request in requests:
+        if hasattr(waste_request, "ai_classification"):
+            waste_request.ai_confidence_percentage = (
+                waste_request.ai_classification.confidence * 100
+            )
 
     return render(
         request,
