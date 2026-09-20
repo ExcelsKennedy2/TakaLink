@@ -1,34 +1,181 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report Waste | TakaLink</title>
-</head>
-<body>
+{% extends "core/base.html" %}
 
-    <h1>♻️ TakaLink</h1>
+{% block title %}Report Waste | TakaLink{% endblock %}
 
-    <h2>Report Waste Problem</h2>
+{% block page_title %}Report Waste Problem{% endblock %}
 
-    <p>
-        Help keep your community clean by reporting illegal dumping,
-        overflowing waste, or other waste-related problems.
-    </p>
+{% block content %}
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+<!-- Page introduction -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-1">
+                    <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+                    Report Waste Problem
+                </h4>
 
-        {{ form.as_p }}
+                <p class="text-secondary mb-0">
+                    Help keep your community clean by reporting illegal dumping,
+                    overflowing waste, or other waste-related problems.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <button type="submit">Submit Report</button>
-    </form>
 
-    <p>
-        <a href="{% url 'resident_dashboard' %}">
-            Back to Dashboard
-        </a>
-    </p>
+<!-- Waste Report Form -->
+<div class="row justify-content-center">
 
-</body>
-</html>
+    <div class="col-lg-8">
+
+        <div class="card card-warning card-outline shadow-sm">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="bi bi-file-earmark-plus me-2"></i>
+                    Report Details
+                </h3>
+            </div>
+
+
+            <form method="post" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <div class="card-body">
+
+                    <!-- Description -->
+                    <div class="row mb-3">
+
+                        <label
+                            for="{{ form.description.id_for_label }}"
+                            class="col-sm-3 col-form-label"
+                        >
+                            Description
+                        </label>
+
+                        <div class="col-sm-9">
+
+                            {{ form.description }}
+
+                            {% if form.description.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.description.errors }}
+                                </div>
+                            {% endif %}
+
+                            <div class="form-text">
+                                Describe the waste problem and what you observed.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Location -->
+                    <div class="row mb-3">
+
+                        <label
+                            for="{{ form.location.id_for_label }}"
+                            class="col-sm-3 col-form-label"
+                        >
+                            Location
+                        </label>
+
+                        <div class="col-sm-9">
+
+                            {{ form.location }}
+
+                            {% if form.location.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.location.errors }}
+                                </div>
+                            {% endif %}
+
+                            <div class="form-text">
+                                Provide the location where the problem was found.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Image -->
+                    <div class="row mb-3">
+
+                        <label
+                            for="{{ form.image.id_for_label }}"
+                            class="col-sm-3 col-form-label"
+                        >
+                            Photo Evidence
+                        </label>
+
+                        <div class="col-sm-9">
+
+                            {{ form.image }}
+
+                            {% if form.image.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ form.image.errors }}
+                                </div>
+                            {% endif %}
+
+                            <div class="form-text">
+                                Optional. Upload a photo showing the waste problem.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Non-field errors -->
+                    {% if form.non_field_errors %}
+
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+
+                            {{ form.non_field_errors }}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Form Footer -->
+                <div class="card-footer d-flex justify-content-between">
+
+                    <a
+                        href="{% url 'resident_dashboard' %}"
+                        class="btn btn-outline-secondary"
+                    >
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Back to Dashboard
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="btn btn-takalink"
+                    >
+                        <i class="bi bi-send me-1"></i>
+                        Submit Report
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
