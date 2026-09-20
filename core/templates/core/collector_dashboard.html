@@ -1,69 +1,326 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collector Dashboard | TakaLink</title>
-</head>
-<body>
+{% extends "core/base.html" %}
 
-    <h1>♻️ TakaLink</h1>
+{% block title %}Collector Dashboard | TakaLink{% endblock %}
 
-    <h2>Collector Dashboard</h2>
+{% block page_title %}Collector Dashboard{% endblock %}
 
-    <p>
-        Welcome,
-        {{ user.first_name|default:user.username }}!
-    </p>
+{% block content %}
 
-    <p>You are logged in as a collector.</p>
+<!-- Welcome -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-1">
+                    Welcome,
+                    {{ user.first_name|default:user.username }}! 👋
+                </h4>
 
-    {% if user.collector_profile %}
-        <h3>Collector Information</h3>
+                <p class="text-secondary mb-0">
+                    Manage your waste collection jobs and keep your community clean.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <p>
-            Phone:
-            {{ user.collector_profile.phone_number }}
-        </p>
 
-        {% if user.collector_profile.business %}
-            <p>
-                Business:
-                {{ user.collector_profile.business.name }}
-            </p>
-        {% endif %}
+{% if user.collector_profile %}
 
-        <p>
-            Verification:
-            {% if user.collector_profile.verification_status %}
-                Verified
-            {% else %}
-                Pending verification
-            {% endif %}
-        </p>
-    {% endif %}
+<!-- Collector Summary -->
+<div class="row">
 
-    <p>
-        <a href="{% url 'collector_pending_jobs' %}">
-            View Pending Jobs
-        </a>
-    </p>
+    <!-- Pending Jobs -->
+    <div class="col-12 col-sm-6 col-md-4">
+        <div class="info-box shadow-sm">
+            <span class="info-box-icon text-bg-warning">
+                <i class="bi bi-hourglass-split"></i>
+            </span>
 
-    <p>
-        <a href="{% url 'collector_active_jobs' %}">
-            View Active Jobs
-        </a>
-    </p>
+            <div class="info-box-content">
+                <span class="info-box-text">Pending Jobs</span>
 
-    <p>
-        <a href="{% url 'collector_completed_jobs' %}">
-            View Completed Jobs
-        </a>
-    </p>
+                <a
+                    href="{% url 'collector_pending_jobs' %}"
+                    class="text-decoration-none"
+                >
+                    <span class="info-box-number fs-6">
+                        View Jobs
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
 
-    <p>
-        <a href="{% url 'logout' %}">Logout</a>
-    </p>
 
-</body>
-</html>
+    <!-- Active Jobs -->
+    <div class="col-12 col-sm-6 col-md-4">
+        <div class="info-box shadow-sm">
+            <span class="info-box-icon text-bg-primary">
+                <i class="bi bi-truck"></i>
+            </span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Active Jobs</span>
+
+                <a
+                    href="{% url 'collector_active_jobs' %}"
+                    class="text-decoration-none"
+                >
+                    <span class="info-box-number fs-6">
+                        View Jobs
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Completed Jobs -->
+    <div class="col-12 col-sm-6 col-md-4">
+        <div class="info-box shadow-sm">
+            <span class="info-box-icon text-bg-success">
+                <i class="bi bi-check-circle-fill"></i>
+            </span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Completed Jobs</span>
+
+                <a
+                    href="{% url 'collector_completed_jobs' %}"
+                    class="text-decoration-none"
+                >
+                    <span class="info-box-number fs-6">
+                        View History
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Collector Information + Quick Actions -->
+<div class="row">
+
+    <!-- Collector Information -->
+    <div class="col-md-5">
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="bi bi-person-badge me-2"></i>
+                    Collector Information
+                </h3>
+            </div>
+
+            <div class="card-body">
+
+                <div class="text-center mb-3">
+
+                    <i
+                        class="bi bi-person-circle text-secondary"
+                        style="font-size: 5rem;"
+                    ></i>
+
+                    <h5 class="mt-2 mb-0">
+                        {{ user.get_full_name|default:user.username }}
+                    </h5>
+
+                    <small class="text-secondary">
+                        Collector
+                    </small>
+
+                </div>
+
+                <hr>
+
+                <!-- Phone -->
+                <div class="d-flex align-items-center mb-3">
+
+                    <i class="bi bi-telephone text-primary fs-5 me-3"></i>
+
+                    <div>
+                        <small class="text-secondary d-block">
+                            Phone
+                        </small>
+
+                        <strong>
+                            {{ user.collector_profile.phone_number }}
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <!-- Business -->
+                {% if user.collector_profile.business %}
+
+                    <div class="d-flex align-items-center mb-3">
+
+                        <i class="bi bi-building text-primary fs-5 me-3"></i>
+
+                        <div>
+                            <small class="text-secondary d-block">
+                                Business
+                            </small>
+
+                            <strong>
+                                {{ user.collector_profile.business.name }}
+                            </strong>
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <!-- Verification -->
+                <div class="d-flex align-items-center">
+
+                    {% if user.collector_profile.verification_status %}
+
+                        <i class="bi bi-patch-check-fill text-success fs-5 me-3"></i>
+
+                        <div>
+                            <small class="text-secondary d-block">
+                                Verification
+                            </small>
+
+                            <span class="badge text-bg-success">
+                                Verified
+                            </span>
+                        </div>
+
+                    {% else %}
+
+                        <i class="bi bi-clock-history text-warning fs-5 me-3"></i>
+
+                        <div>
+                            <small class="text-secondary d-block">
+                                Verification
+                            </small>
+
+                            <span class="badge text-bg-warning">
+                                Pending Verification
+                            </span>
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="col-md-7">
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="bi bi-lightning-charge-fill me-2"></i>
+                    Quick Actions
+                </h3>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <a
+                            href="{% url 'collector_pending_jobs' %}"
+                            class="btn btn-takalink w-100 py-3"
+                        >
+                            <i class="bi bi-hourglass-split fs-4 d-block mb-1"></i>
+                            View Pending Jobs
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a
+                            href="{% url 'collector_active_jobs' %}"
+                            class="btn btn-outline-primary w-100 py-3"
+                        >
+                            <i class="bi bi-truck fs-4 d-block mb-1"></i>
+                            Active Collections
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a
+                            href="{% url 'collector_completed_jobs' %}"
+                            class="btn btn-outline-success w-100 py-3"
+                        >
+                            <i class="bi bi-check-circle fs-4 d-block mb-1"></i>
+                            Completed Jobs
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a
+                            href="{% url 'logout' %}"
+                            class="btn btn-outline-danger w-100 py-3"
+                        >
+                            <i class="bi bi-box-arrow-right fs-4 d-block mb-1"></i>
+                            Sign Out
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Collector Message -->
+        <div class="card text-bg-primary shadow-sm">
+
+            <div class="card-body text-center">
+
+                <i
+                    class="bi bi-recycle"
+                    style="font-size: 3rem;"
+                ></i>
+
+                <h4 class="mt-3">
+                    Keep Making a Difference
+                </h4>
+
+                <p class="mb-0">
+                    Every collection helps create cleaner communities
+                    and a healthier environment.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% else %}
+
+<!-- No Collector Profile -->
+<div class="alert alert-warning shadow-sm">
+
+    <i class="bi bi-exclamation-triangle me-2"></i>
+
+    You do not have a collector profile yet.
+
+</div>
+
+{% endif %}
+
+{% endblock %}
