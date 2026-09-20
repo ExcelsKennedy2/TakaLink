@@ -1,85 +1,216 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Completed Jobs | TakaLink</title>
-</head>
-<body>
+{% extends "core/base.html" %}
 
-    <h1>♻️ TakaLink</h1>
+{% block title %}Completed Jobs | TakaLink{% endblock %}
 
-    <h2>Completed Collection Jobs</h2>
+{% block page_title %}Completed Collection Jobs{% endblock %}
 
-    <p>
-        Welcome,
-        {{ user.first_name|default:user.username }}!
-    </p>
+{% block content %}
 
-    <p>
-        <a href="{% url 'collector_dashboard' %}">
-            Back to Dashboard
+<!-- Page introduction -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-1">
+                    <i class="bi bi-check-circle text-success me-2"></i>
+                    Completed Collection Jobs
+                </h4>
+
+                <p class="text-secondary mb-0">
+                    View your completed waste collection jobs and their details.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if collections %}
+
+<!-- Completed Jobs Table -->
+<div class="card shadow-sm">
+
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="bi bi-clipboard-check me-2"></i>
+            Collection History
+        </h3>
+
+        <div class="card-tools">
+            <span class="badge text-bg-success">
+                {{ collections|length }} Completed Job{{ collections|length|pluralize }}
+            </span>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover table-striped mb-0">
+
+                <thead>
+                    <tr>
+                        <th>Collection</th>
+                        <th>Request</th>
+                        <th>Category</th>
+                        <th>Location</th>
+                        <th>Scheduled</th>
+                        <th>Completed</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for collection in collections %}
+
+                        <tr>
+
+                            <!-- Collection -->
+                            <td>
+                                <strong>
+                                    #{{ collection.id }}
+                                </strong>
+                            </td>
+
+
+                            <!-- Request -->
+                            <td>
+                                #{{ collection.waste_request.id }}
+                            </td>
+
+
+                            <!-- Category -->
+                            <td>
+                                {{ collection.waste_request.category|default:"Not specified" }}
+                            </td>
+
+
+                            <!-- Location -->
+                            <td>
+                                <span title="{{ collection.waste_request.location }}">
+                                    <i class="bi bi-geo-alt text-secondary me-1"></i>
+                                    {{ collection.waste_request.location|truncatechars:25 }}
+                                </span>
+                            </td>
+
+
+                            <!-- Scheduled -->
+                            <td>
+                                {{ collection.scheduled_date|date:"M d, Y" }}
+                                <br>
+                                <small class="text-secondary">
+                                    {{ collection.scheduled_date|time:"g:i A" }}
+                                </small>
+                            </td>
+
+
+                            <!-- Completed -->
+                            <td>
+                                {% if collection.completed_at %}
+
+                                    {{ collection.completed_at|date:"M d, Y" }}
+                                    <br>
+                                    <small class="text-secondary">
+                                        {{ collection.completed_at|time:"g:i A" }}
+                                    </small>
+
+                                {% else %}
+
+                                    <span class="text-secondary">
+                                        Not recorded
+                                    </span>
+
+                                {% endif %}
+                            </td>
+
+
+                            <!-- Status -->
+                            <td>
+                                <span class="badge text-bg-success">
+                                    <i class="bi bi-check-circle me-1"></i>
+                                    {{ collection.get_status_display }}
+                                </span>
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- Footer -->
+    <div class="card-footer">
+
+        <a
+            href="{% url 'collector_pending_jobs' %}"
+            class="btn btn-outline-primary"
+        >
+            <i class="bi bi-hourglass-split me-1"></i>
+            Pending Jobs
         </a>
-    </p>
 
-    <hr>
+        <a
+            href="{% url 'collector_active_jobs' %}"
+            class="btn btn-outline-primary ms-2"
+        >
+            <i class="bi bi-truck me-1"></i>
+            Active Jobs
+        </a>
 
-    {% if collections %}
+        <a
+            href="{% url 'collector_dashboard' %}"
+            class="btn btn-outline-secondary ms-2"
+        >
+            <i class="bi bi-arrow-left me-1"></i>
+            Dashboard
+        </a>
 
-        {% for collection in collections %}
+    </div>
 
-            <h3>Collection #{{ collection.id }}</h3>
+</div>
 
-            <p>
-                <strong>Request:</strong>
-                #{{ collection.waste_request.id }}
-            </p>
 
-            <p>
-                <strong>Category:</strong>
-                {{ collection.waste_request.category|default:"Not specified" }}
-            </p>
+{% else %}
 
-            <p>
-                <strong>Description:</strong>
-                {{ collection.waste_request.description|default:"No description" }}
-            </p>
+<!-- Empty state -->
+<div class="card shadow-sm">
 
-            <p>
-                <strong>Location:</strong>
-                {{ collection.waste_request.location }}
-            </p>
+    <div class="card-body text-center py-5">
 
-            <p>
-                <strong>Scheduled Date:</strong>
-                {{ collection.scheduled_date }}
-            </p>
+        <i
+            class="bi bi-clipboard-x text-secondary"
+            style="font-size: 4rem;"
+        ></i>
 
-            <p>
-                <strong>Completed At:</strong>
-                {{ collection.completed_at }}
-            </p>
+        <h4 class="mt-3">
+            No Completed Jobs Yet
+        </h4>
 
-            <p>
-                <strong>Status:</strong>
-                {{ collection.get_status_display }}
-            </p>
-
-            <hr>
-
-        {% endfor %}
-
-    {% else %}
-
-        <p>
+        <p class="text-secondary">
             You have not completed any collection jobs yet.
         </p>
 
-    {% endif %}
+        <a
+            href="{% url 'collector_pending_jobs' %}"
+            class="btn btn-takalink"
+        >
+            <i class="bi bi-hourglass-split me-1"></i>
+            View Pending Jobs
+        </a>
 
-    <p>
-        <a href="{% url 'logout' %}">Logout</a>
-    </p>
+    </div>
 
-</body>
-</html>
+</div>
+
+{% endif %}
+
+{% endblock %}
