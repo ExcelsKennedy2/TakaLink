@@ -1,5 +1,6 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.utils import timezone
 
@@ -13,6 +14,7 @@ from .forms import (
 
 from .models import WasteRequest, Collection, WasteReport, Reward, CollectionItem, Notification, AIClassification
 from .ai_service import classify_waste
+from .assistant_service import get_taka_response
 
 def home(request):
     return render(request, "core/home.html")
@@ -113,6 +115,40 @@ def resident_dashboard(request):
             "resident_profile": resident_profile,
             "unread_notifications_count": unread_notifications_count,
         },
+    )
+
+@login_required
+def taka_ai(request):
+    if request.user.role != request.user.Role.RESIDENT:
+        return JsonResponse(
+            {"error": "Only residents can use Taka AI."},
+            status=403,
+        )
+
+    if request.method == "GET":
+        return render(request, "core/taka_ai.html")
+
+    if request.method == "POST":
+        question = request.POST.get("question", "").strip()
+
+        if not question:
+            return JsonResponse(
+                {"error": "Please enter a question."},
+                status=400,
+            )
+
+        answer = get_taka_response(question)
+
+        return JsonResponse(
+            {
+                "question": question,
+                "answer": answer,
+            }
+        )
+
+    return JsonResponse(
+        {"error": "Method not allowed."},
+        status=405,
     )
 
 @login_required

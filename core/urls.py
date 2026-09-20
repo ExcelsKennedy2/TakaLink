@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
     path("", views.home, name="home"),
 
@@ -92,4 +91,6 @@ urlpatterns = [
         views.collector_completed_jobs,
         name="collector_completed_jobs",
     ),
+
+    path("taka-ai/", views.taka_ai, name="taka_ai"),
 ]
