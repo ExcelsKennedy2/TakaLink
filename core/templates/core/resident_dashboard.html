@@ -1,114 +1,550 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resident Dashboard | TakaLink</title>
-</head>
-<body>
+{% extends "core/base.html" %}
 
-    <h1>♻️ TakaLink</h1>
+{% block title %}Resident Dashboard | TakaLink{% endblock %}
 
-    <h2>Resident Dashboard</h2>
+{% block page_title %}Resident Dashboard{% endblock %}
 
-    <p>
-        Welcome,
-        {{ user.first_name|default:user.username }}!
-    </p>
+{% block content %}
 
-    <p>You are logged in as a resident.</p>
+<!-- Welcome message -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-1">
+                    Welcome,
+                    {{ user.first_name|default:user.username }}! 👋
+                </h4>
+                <p class="text-secondary mb-0">
+                    Manage your waste collections and help keep your community clean.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <h3>Waste Collection</h3>
 
-    <p>
-        <a href="{% url 'create_collection' %}">
-            Create Collection Request
-        </a>
-    </p>
+{% if user.resident_profile %}
 
-    <p>
-        <a href="{% url 'collection_history' %}">
-            View Collection History
-        </a>
-    </p>
+<!-- Resident Summary -->
+<div class="row">
 
-    <p>
-        <a href="{% url 'create_waste_report' %}">
-            Report Waste Problem
-        </a>
-    </p>
-    <p>
-        <a href="{% url 'waste_report_history' %}">
-            View Waste Report History
-        </a>
-    </p>
-    <p>
-       <a href="{% url 'notifications' %}">
-            🔔 Notifications
-            {% if unread_notifications_count > 0 %}
-                ({{ unread_notifications_count }})
-            {% endif %}
-        </a> 
-    </p>
-    
+    <!-- Green Points -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box shadow-sm">
+            <span class="info-box-icon text-bg-success">
+                <i class="bi bi-leaf-fill"></i>
+            </span>
 
-    {% if user.resident_profile %}
-        <h3>Your Profile</h3>
+            <div class="info-box-content">
+                <span class="info-box-text">Green Points</span>
+                <span class="info-box-number">
+                    {{ resident_profile.points }}
+                </span>
+            </div>
+        </div>
+    </div>
 
-        <p>
-            Phone:
-            {{ user.resident_profile.phone_number }}
-        </p>
+    <!-- Green Level -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box shadow-sm">
+            <span class="info-box-icon text-bg-primary">
+                <i class="bi bi-award-fill"></i>
+            </span>
 
-        <div>
-            <h3>🌱 Green Points</h3>
+            <div class="info-box-content">
+                <span class="info-box-text">Green Level</span>
+                <span class="info-box-number">
+                    {{ resident_profile.green_level }}
+                </span>
+            </div>
+        </div>
+    </div>
 
-            <p><strong>{{ resident_profile.points }} Points</strong></p>
+    <!-- Collection Request -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box shadow-sm">
+            <span class="info-box-icon text-bg-info">
+                <i class="bi bi-truck"></i>
+            </span>
 
-            <p>
-                Level: <strong>{{ resident_profile.green_level }}</strong>
-            </p>
-
-            <div>
-                <div
-                    style="
-                        width: 300px;
-                        height: 20px;
-                        border: 1px solid #333;
-                    "
+            <div class="info-box-content">
+                <span class="info-box-text">Waste Collection</span>
+                <a
+                    href="{% url 'create_collection' %}"
+                    class="text-decoration-none"
                 >
-                    <div
-                        style="
-                            width: {{ resident_profile.green_progress }}%;
-                            height: 100%;
-                            background-color: green;
-                        "
-                    ></div>
+                    <span class="info-box-number fs-6">
+                        Request Collection
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="info-box shadow-sm">
+            <span class="info-box-icon text-bg-warning">
+                <i class="bi bi-bell-fill"></i>
+            </span>
+
+            <div class="info-box-content">
+                <span class="info-box-text">Notifications</span>
+
+                <a
+                    href="{% url 'notifications' %}"
+                    class="text-decoration-none"
+                >
+                    <span class="info-box-number fs-6">
+                        {% if unread_notifications_count > 0 %}
+                            {{ unread_notifications_count }} Unread
+                        {% else %}
+                            All Caught Up
+                        {% endif %}
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Green Progress + Profile -->
+<div class="row">
+
+    <div class="col-md-8">
+
+        <!-- Green Progress -->
+        <div class="card mb-4 shadow-sm">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="bi bi-bar-chart-fill me-2"></i>
+                    Green Progress
+                </h3>
+
+                <div class="card-tools">
+                    <span class="badge text-bg-success">
+                        {{ resident_profile.green_level }}
+                    </span>
                 </div>
             </div>
 
-            {% if resident_profile.points_to_next_level > 0 %}
-                <p>
-                    {{ resident_profile.points_to_next_level }}
-                    points until {{ resident_profile.next_green_level }}
-                </p>
-            {% else %}
-                <p>🏆 You have reached the highest level!</p>
-            {% endif %}
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-8">
+
+                        <p class="text-center">
+                            <strong>
+                                {{ resident_profile.points }}
+                                Green Points
+                            </strong>
+                        </p>
+
+                        <div class="progress progress-sm mb-3">
+                            <div
+                                class="progress-bar bg-success"
+                                role="progressbar"
+                                style="width: {{ resident_profile.green_progress }}%"
+                                aria-valuenow="{{ resident_profile.green_progress }}"
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                            ></div>
+                        </div>
+
+                        {% if resident_profile.points_to_next_level > 0 %}
+
+                            <p class="text-center text-secondary mb-0">
+                                <strong>
+                                    {{ resident_profile.points_to_next_level }}
+                                </strong>
+                                points until
+                                <strong>
+                                    {{ resident_profile.next_green_level }}
+                                </strong>
+                            </p>
+
+                        {% else %}
+
+                            <p class="text-center text-success mb-0">
+                                <i class="bi bi-trophy-fill me-1"></i>
+                                You've reached the highest level!
+                            </p>
+
+                        {% endif %}
+
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="text-center">
+
+                            <i
+                                class="bi bi-leaf-fill text-success"
+                                style="font-size: 4rem;"
+                            ></i>
+
+                            <h5 class="fw-bold mt-2">
+                                {{ resident_profile.green_level }}
+                            </h5>
+
+                            <p class="text-secondary mb-0">
+                                Keep making greener choices!
+                            </p>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer text-center">
+
+                <a
+                    href="{% url 'green_points_history' %}"
+                    class="btn btn-sm btn-takalink"
+                >
+                    <i class="bi bi-clock-history me-1"></i>
+                    View Points History
+                </a>
+
+            </div>
+
         </div>
-    {% else %}
-        <p>You do not have a resident profile yet.</p>
-    {% endif %}
 
-    <p>
-        <a href="{% url 'green_points_history' %}">
-            View Green Points History
-        </a>
-    </p>
+    </div>
 
-    <p>
-        <a href="{% url 'logout' %}">Logout</a>
-    </p>
 
-</body>
-</html>
+    <!-- Profile -->
+    <div class="col-md-4">
+
+        <div class="card mb-4 shadow-sm">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="bi bi-person-circle me-2"></i>
+                    Your Profile
+                </h3>
+            </div>
+
+            <div class="card-body">
+
+                <div class="text-center mb-3">
+                    <i
+                        class="bi bi-person-circle text-secondary"
+                        style="font-size: 5rem;"
+                    ></i>
+
+                    <h5 class="mt-2 mb-0">
+                        {{ user.get_full_name|default:user.username }}
+                    </h5>
+
+                    <small class="text-secondary">
+                        Resident
+                    </small>
+                </div>
+
+                <hr>
+
+                <p class="mb-2">
+                    <strong>
+                        <i class="bi bi-telephone me-2"></i>
+                        Phone
+                    </strong>
+                </p>
+
+                <p class="text-secondary">
+                    {{ user.resident_profile.phone_number }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% else %}
+
+<!-- No Profile -->
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle me-2"></i>
+    You do not have a resident profile yet.
+</div>
+
+{% endif %}
+
+
+<!-- Main Actions -->
+<div class="row">
+
+    <!-- Left column -->
+    <div class="col-md-8">
+
+        <!-- Quick Actions -->
+        <div class="card mb-4 shadow-sm">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="bi bi-lightning-charge-fill me-2"></i>
+                    Quick Actions
+                </h3>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <a
+                            href="{% url 'create_collection' %}"
+                            class="btn btn-takalink w-100 py-3"
+                        >
+                            <i class="bi bi-truck fs-4 d-block mb-1"></i>
+                            Request Waste Collection
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a
+                            href="{% url 'collection_history' %}"
+                            class="btn btn-outline-primary w-100 py-3"
+                        >
+                            <i class="bi bi-clock-history fs-4 d-block mb-1"></i>
+                            Collection History
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a
+                            href="{% url 'create_waste_report' %}"
+                            class="btn btn-outline-warning w-100 py-3"
+                        >
+                            <i class="bi bi-exclamation-triangle fs-4 d-block mb-1"></i>
+                            Report Waste Problem
+                        </a>
+                    </div>
+
+                    <div class="col-md-6">
+                        <a
+                            href="{% url 'waste_report_history' %}"
+                            class="btn btn-outline-secondary w-100 py-3"
+                        >
+                            <i class="bi bi-file-earmark-text fs-4 d-block mb-1"></i>
+                            Waste Report History
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Taka AI -->
+        <div class="card direct-chat direct-chat-primary shadow-sm">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="bi bi-stars me-2"></i>
+                    Taka AI
+                </h3>
+
+                <div class="card-tools">
+                    <span class="badge text-bg-primary">
+                        Assistant
+                    </span>
+
+                    <a
+                        href="{% url 'taka_ai' %}"
+                        class="btn btn-tool"
+                        title="Open Taka AI"
+                    >
+                        <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card-body">
+
+                <div
+                    class="direct-chat-messages"
+                    style="height: 180px;"
+                >
+
+                    <div class="direct-chat-msg">
+                        <div class="direct-chat-infos clearfix">
+                            <span class="direct-chat-name float-start">
+                                Taka AI
+                            </span>
+                        </div>
+
+                        <div class="direct-chat-text">
+                            Hi! 👋 I'm Taka AI. I can help you with
+                            waste collection, recycling, Green Points,
+                            and waste reports.
+                        </div>
+                    </div>
+
+                    <div class="direct-chat-msg end">
+
+                        <div class="direct-chat-infos clearfix">
+                            <span class="direct-chat-name float-end">
+                                You
+                            </span>
+                        </div>
+
+                        <div class="direct-chat-text">
+                            Need help with waste collection?
+                        </div>
+
+                    </div>
+
+                    <div class="direct-chat-msg">
+
+                        <div class="direct-chat-infos clearfix">
+                            <span class="direct-chat-name float-start">
+                                Taka AI
+                            </span>
+                        </div>
+
+                        <div class="direct-chat-text">
+                            Click below to chat with me.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer text-center">
+
+                <a
+                    href="{% url 'taka_ai' %}"
+                    class="btn btn-takalink"
+                >
+                    <i class="bi bi-stars me-1"></i>
+                    Open Taka AI
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Right column -->
+    <div class="col-md-4">
+
+        <!-- Resident Tools -->
+        <div class="card mb-4 shadow-sm">
+
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="bi bi-grid-fill me-2"></i>
+                    Resident Tools
+                </h3>
+            </div>
+
+            <div class="card-body p-0">
+
+                <div class="list-group list-group-flush">
+
+                    <a
+                        href="{% url 'collection_history' %}"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    >
+                        <span>
+                            <i class="bi bi-clock-history text-primary me-2"></i>
+                            Collection History
+                        </span>
+
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+
+                    <a
+                        href="{% url 'green_points_history' %}"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    >
+                        <span>
+                            <i class="bi bi-leaf-fill text-success me-2"></i>
+                            Green Points
+                        </span>
+
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+
+                    <a
+                        href="{% url 'waste_report_history' %}"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    >
+                        <span>
+                            <i class="bi bi-file-earmark-text text-warning me-2"></i>
+                            Waste Reports
+                        </span>
+
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+
+                    <a
+                        href="{% url 'notifications' %}"
+                        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                    >
+                        <span>
+                            <i class="bi bi-bell text-info me-2"></i>
+                            Notifications
+                        </span>
+
+                        {% if unread_notifications_count > 0 %}
+                            <span class="badge text-bg-danger rounded-pill">
+                                {{ unread_notifications_count }}
+                            </span>
+                        {% else %}
+                            <i class="bi bi-chevron-right"></i>
+                        {% endif %}
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Community Message -->
+        <div class="card text-bg-primary shadow-sm">
+
+            <div class="card-body text-center">
+
+                <i
+                    class="bi bi-recycle"
+                    style="font-size: 3rem;"
+                ></i>
+
+                <h4 class="mt-3">
+                    Cleaner Communities
+                </h4>
+
+                <p class="mb-0">
+                    Every collection, every report, and every
+                    responsible choice helps build a cleaner future.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

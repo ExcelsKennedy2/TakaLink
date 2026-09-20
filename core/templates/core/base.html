@@ -1,0 +1,450 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}TakaLink{% endblock %}</title>
+    <link
+    rel="icon"
+    type="image/png"
+    href="{% static 'core/images/favicon-dark.svg' %}"
+>
+
+    <!-- AdminLTE / Bootstrap theme -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    >
+
+    <!-- OverlayScrollbars -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css"
+    >
+
+    <!-- AdminLTE -->
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/adminlte.css' %}"
+    >
+
+    <!-- TakaLink custom styling -->
+    <style>
+        :root {
+            --takalink-blue: #2563EB;
+            --takalink-navy: #0F172A;
+            --takalink-slate: #475569;
+        }
+
+        .brand-link {
+            text-decoration: none;
+        }
+
+        .takalink-blue {
+            color: var(--takalink-blue);
+        }
+
+        .takalink-navy {
+            color: var(--takalink-navy);
+        }
+
+        .btn-takalink {
+            background-color: var(--takalink-blue);
+            border-color: var(--takalink-blue);
+            color: #fff;
+        }
+
+        .btn-takalink:hover {
+            background-color: #1d4ed8;
+            border-color: #1d4ed8;
+            color: #fff;
+        }
+
+        .app-sidebar .nav-link.active {
+            background-color: var(--takalink-blue);
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+
+<div class="app-wrapper">
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <nav class="app-header navbar navbar-expand bg-body">
+
+        <div class="container-fluid">
+
+            <!-- Sidebar toggle -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        data-lte-toggle="sidebar"
+                        href="#"
+                        role="button"
+                        aria-label="Toggle sidebar"
+                    >
+                        <i class="bi bi-list"></i>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Right side -->
+            <ul class="navbar-nav ms-auto">
+
+                <!-- Notifications -->
+                <li class="nav-item">
+                    <a
+                        class="nav-link"
+                        href="{% url 'notifications' %}"
+                        aria-label="Notifications"
+                    >
+                        <i class="bi bi-bell"></i>
+
+                        {% if unread_notifications_count %}
+                            <span class="navbar-badge badge text-bg-danger">
+                                {{ unread_notifications_count }}
+                            </span>
+                        {% endif %}
+                    </a>
+                </li>
+
+                <!-- User -->
+                <li class="nav-item dropdown user-menu">
+
+                    <a
+                        href="#"
+                        class="nav-link dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                    >
+                        <i class="bi bi-person-circle fs-5"></i>
+
+                        <span class="d-none d-md-inline">
+                            {{ user.first_name|default:user.username }}
+                        </span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+
+                        <li class="user-header text-bg-primary">
+                            <i class="bi bi-person-circle display-3"></i>
+
+                            <p>
+                                {{ user.get_full_name|default:user.username }}
+
+                                {% if user.role == "RESIDENT" %}
+                                    <small>Resident</small>
+                                {% elif user.role == "COLLECTOR" %}
+                                    <small>Collector</small>
+                                {% endif %}
+                            </p>
+                        </li>
+
+                        <li class="user-footer">
+                            <a
+                                href="{% url 'logout' %}"
+                                class="btn btn-outline-danger float-end"
+                            >
+                                Sign out
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div>
+    </nav>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+    <aside
+        class="app-sidebar bg-body-secondary shadow"
+        data-bs-theme="dark"
+    >
+
+        <!-- Brand -->
+        <div class="sidebar-brand">
+
+            <a
+                href="{% url 'dashboard' %}"
+                class="brand-link"
+            >
+                <img
+                    src="{% static 'core/images/logo-dark.svg' %}"
+                    alt="TakaLink"
+                    class="brand-image"
+                >
+            </a>
+
+        </div>
+
+
+        <!-- Sidebar -->
+        <div class="sidebar-wrapper">
+
+            <nav class="mt-2" aria-label="Main navigation">
+
+                <ul
+                    class="nav sidebar-menu flex-column"
+                    data-lte-toggle="treeview"
+                    data-accordion="false"
+                >
+
+                    {% if user.role == "RESIDENT" %}
+
+                        <!-- Resident Dashboard -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'resident_dashboard' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-speedometer2"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+
+                        <!-- Request Collection -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'create_collection' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-truck"></i>
+                                <p>Request Collection</p>
+                            </a>
+                        </li>
+
+                        <!-- Collection History -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'collection_history' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-clock-history"></i>
+                                <p>Collection History</p>
+                            </a>
+                        </li>
+
+                        <!-- Report Waste -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'create_waste_report' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-exclamation-triangle"></i>
+                                <p>Report Waste</p>
+                            </a>
+                        </li>
+
+                        <!-- Green Points -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'green_points_history' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-leaf"></i>
+                                <p>Green Points</p>
+                            </a>
+                        </li>
+
+                        <!-- Taka AI -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'taka_ai' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-stars"></i>
+                                <p>Taka AI</p>
+                            </a>
+                        </li>
+
+                        <!-- Notifications -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'notifications' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-bell"></i>
+                                <p>Notifications</p>
+                            </a>
+                        </li>
+
+
+                    {% elif user.role == "COLLECTOR" %}
+
+                        <!-- Collector Dashboard -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'collector_dashboard' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-speedometer2"></i>
+                                <p>Dashboard</p>
+                            </a>
+                        </li>
+
+                        <!-- Pending Jobs -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'collector_pending_jobs' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-hourglass-split"></i>
+                                <p>Pending Jobs</p>
+                            </a>
+                        </li>
+
+                        <!-- Active Collections -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'collector_active_jobs' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-truck"></i>
+                                <p>Active Collections</p>
+                            </a>
+                        </li>
+
+                        <!-- Completed Jobs -->
+                        <li class="nav-item">
+                            <a
+                                href="{% url 'collector_completed_jobs' %}"
+                                class="nav-link"
+                            >
+                                <i class="nav-icon bi bi-check-circle"></i>
+                                <p>Completed Jobs</p>
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+
+                    <!-- Divider -->
+                    <li class="nav-header">ACCOUNT</li>
+
+                    <li class="nav-item">
+                        <a
+                            href="{% url 'logout' %}"
+                            class="nav-link"
+                        >
+                            <i class="nav-icon bi bi-box-arrow-right"></i>
+                            <p>Logout</p>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </nav>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+    <main class="app-main">
+
+        <!-- Page header -->
+        <div class="app-content-header">
+
+            <div class="container-fluid">
+
+                <div class="row">
+
+                    <div class="col-sm-6">
+                        <h3 class="mb-0">
+                            {% block page_title %}Dashboard{% endblock %}
+                        </h3>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Page content -->
+        <div class="app-content">
+
+            <div class="container-fluid">
+
+                {% block content %}
+                {% endblock %}
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="app-footer">
+
+        <div class="float-end d-none d-sm-inline">
+            Smart waste collection
+        </div>
+
+        <strong>
+            TakaLink
+        </strong>
+
+        &nbsp;|&nbsp;
+
+        Smart waste collection for cleaner communities.
+
+    </footer>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================== -->
+
+<!-- OverlayScrollbars -->
+<script
+    src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
+></script>
+
+<!-- Popper -->
+<script
+    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+></script>
+
+<!-- Bootstrap -->
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js"
+></script>
+
+<!-- AdminLTE -->
+<script src="{% static 'core/js/adminlte.js' %}"></script>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>
