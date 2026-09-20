@@ -5,359 +5,408 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="TakaLink — smart waste collection for cleaner communities.">
 
-<meta name="description"
-      content="TakaLink — smart waste collection for cleaner communities.">
+    <title>TakaLink | Smart Waste Collection</title>
 
-<title>TakaLink | Smart Waste Collection</title>
+    {% load static %}
 
-{% load static %}
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
-<!-- Bootstrap -->
-<link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-    rel="stylesheet"
->
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    >
 
-<!-- Bootstrap Icons -->
-<link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
->
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Roboto+Slab:wght@400;500&display=swap"
+        rel="stylesheet"
+    >
 
-<!-- Google Fonts -->
-<link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Roboto+Slab:wght@400;500&display=swap"
-    rel="stylesheet"
->
-
-<style>
-    :root {
-        --takalink-blue: #2563EB;
-        --takalink-navy: #0F172A;
-        --takalink-slate: #475569;
-        --takalink-background: #F8FAFC;
-        --takalink-border: #E2E8F0;
-        --takalink-hover: #1D4ED8;
-    }
-
-    html {
-        scroll-behavior: smooth;
-        scroll-padding-top: 80px;
-    }
-
-    body {
-        font-family: "Montserrat", sans-serif;
-        color: var(--takalink-navy);
-        background: var(--takalink-background);
-    }
-
-    p {
-        font-family: "Roboto Slab", serif;
-        line-height: 1.8;
-    }
-
-    /* Navbar */
-    .navbar {
-        background: rgba(15, 23, 42, 0.97);
-        padding: 1rem 0;
-    }
-
-    .navbar-brand img {
-        height: 42px;
-        width: auto;
-    }
-
-    .navbar .nav-link {
-        color: #fff;
-        font-weight: 600;
-        font-size: 0.9rem;
-        margin-left: 0.75rem;
-    }
-
-    .navbar .nav-link:hover {
-        color: #93C5FD;
-    }
-
-    .btn-takalink {
-        background-color: var(--takalink-blue);
-        border-color: var(--takalink-blue);
-        color: #fff;
-        font-weight: 700;
-        border-radius: 8px;
-        padding: 0.75rem 1.4rem;
-    }
-
-    .btn-takalink:hover {
-        background-color: var(--takalink-hover);
-        border-color: var(--takalink-hover);
-        color: #fff;
-    }
-
-    .btn-outline-takalink {
-        border: 2px solid var(--takalink-blue);
-        color: var(--takalink-blue);
-        font-weight: 700;
-        border-radius: 8px;
-        padding: 0.7rem 1.4rem;
-    }
-
-    .btn-outline-takalink:hover {
-        background-color: var(--takalink-blue);
-        color: #fff;
-    }
-
-    /* Hero */
-    .hero {
-        min-height: 720px;
-        display: flex;
-        align-items: center;
-        padding: 120px 0 80px;
-        background: #fff;
-    }
-
-    .hero-badge {
-        display: inline-block;
-        background: #DBEAFE;
-        color: var(--takalink-blue);
-        font-weight: 700;
-        border-radius: 50px;
-        padding: 0.55rem 1rem;
-        margin-bottom: 1.25rem;
-    }
-
-    .hero h1 {
-        font-size: clamp(2.5rem, 5vw, 4.5rem);
-        font-weight: 800;
-        line-height: 1.08;
-        letter-spacing: -1px;
-    }
-
-    .hero h1 span {
-        color: var(--takalink-blue);
-    }
-
-    .hero-text {
-        color: var(--takalink-slate);
-        font-size: 1.1rem;
-        max-width: 620px;
-    }
-
-    .hero-image {
-        width: 100%;
-        max-height: 520px;
-        object-fit: contain;
-    }
-
-    /* Sections */
-    .section-padding {
-        padding: 90px 0;
-    }
-
-    .section-title {
-        font-weight: 800;
-        font-size: 2.5rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .section-subtitle {
-        color: var(--takalink-slate);
-        max-width: 700px;
-        margin: 0 auto 3rem;
-    }
-
-    /* Feature cards */
-    .feature-card {
-        height: 100%;
-        background: #fff;
-        border: 1px solid var(--takalink-border);
-        border-radius: 16px;
-        padding: 2rem;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-    }
-
-    .feature-icon {
-        width: 64px;
-        height: 64px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #DBEAFE;
-        color: var(--takalink-blue);
-        border-radius: 14px;
-        font-size: 1.8rem;
-        margin-bottom: 1.25rem;
-    }
-
-    .feature-card h4 {
-        font-weight: 700;
-    }
-
-    .feature-card p {
-        color: var(--takalink-slate);
-        font-size: 0.95rem;
-    }
-
-    /* How it works */
-    .workflow-section {
-        background: var(--takalink-navy);
-        color: #fff;
-    }
-
-    .workflow-section .section-subtitle {
-        color: #CBD5E1;
-    }
-
-    .workflow-step {
-        text-align: center;
-        position: relative;
-    }
-
-    .step-number {
-        width: 58px;
-        height: 58px;
-        margin: 0 auto 1.25rem;
-        border-radius: 50%;
-        background: var(--takalink-blue);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: 800;
-        font-size: 1.1rem;
-    }
-
-    .workflow-step h5 {
-        font-weight: 700;
-    }
-
-    .workflow-step p {
-        color: #CBD5E1;
-        font-size: 0.9rem;
-    }
-
-    /* About */
-    .about-card {
-        background: #fff;
-        border: 1px solid var(--takalink-border);
-        border-radius: 18px;
-        padding: 3rem;
-    }
-
-    .about-icon {
-        font-size: 3rem;
-        color: var(--takalink-blue);
-    }
-
-    /* Product showcase */
-    .showcase-placeholder {
-        min-height: 350px;
-        background: #E2E8F0;
-        border-radius: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--takalink-slate);
-        text-align: center;
-        padding: 2rem;
-    }
-
-    /* Contact */
-    .contact-section {
-        background: #fff;
-    }
-
-    .contact-card {
-        height: 100%;
-        background: var(--takalink-background);
-        border: 1px solid var(--takalink-border);
-        border-radius: 16px;
-        padding: 2rem;
-    }
-
-    .contact-icon {
-        color: var(--takalink-blue);
-        font-size: 1.5rem;
-        margin-right: 0.75rem;
-    }
-
-    .contact-card a {
-        color: var(--takalink-navy);
-        text-decoration: none;
-        font-weight: 600;
-    }
-
-    .contact-card a:hover {
-        color: var(--takalink-blue);
-    }
-
-    /* Final CTA */
-    .cta-section {
-        background: var(--takalink-blue);
-        color: #fff;
-        padding: 90px 0;
-    }
-
-    .cta-section p {
-        color: #DBEAFE;
-    }
-
-    .btn-light-takalink {
-        background: #fff;
-        color: var(--takalink-blue);
-        border: none;
-        font-weight: 700;
-        border-radius: 8px;
-        padding: 0.85rem 1.6rem;
-    }
-
-    .btn-light-takalink:hover {
-        background: #EFF6FF;
-        color: var(--takalink-hover);
-    }
-
-    /* Footer */
-    footer {
-        background: var(--takalink-navy);
-        color: #CBD5E1;
-        padding: 2rem 0;
-    }
-
-    footer a {
-        color: #CBD5E1;
-        text-decoration: none;
-    }
-
-    footer a:hover {
-        color: #fff;
-    }
-
-    @media (max-width: 991px) {
-        .navbar .nav-link {
-            margin-left: 0;
-            margin-top: 0.5rem;
+    <style>
+        :root {
+            --takalink-blue: #2563EB;
+            --takalink-navy: #0F172A;
+            --takalink-slate: #475569;
+            --takalink-background: #F8FAFC;
+            --takalink-border: #E2E8F0;
+            --takalink-hover: #1D4ED8;
         }
 
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: "Montserrat", sans-serif;
+            color: var(--takalink-navy);
+            background: var(--takalink-background);
+        }
+
+        p {
+            font-family: "Roboto Slab", serif;
+            line-height: 1.8;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(15, 23, 42, 0.97);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand img {
+            height: 42px;
+            width: auto;
+        }
+
+        .navbar .nav-link {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-left: 0.75rem;
+        }
+
+        .navbar .nav-link:hover {
+            color: #93C5FD;
+        }
+
+        .btn-takalink {
+            background-color: var(--takalink-blue);
+            border-color: var(--takalink-blue);
+            color: #fff;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 0.75rem 1.4rem;
+        }
+
+        .btn-takalink:hover {
+            background-color: var(--takalink-hover);
+            border-color: var(--takalink-hover);
+            color: #fff;
+        }
+
+        .btn-outline-takalink {
+            border: 2px solid var(--takalink-blue);
+            color: var(--takalink-blue);
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 0.7rem 1.4rem;
+        }
+
+        .btn-outline-takalink:hover {
+            background-color: var(--takalink-blue);
+            color: #fff;
+        }
+
+        /* ==================== HERO ==================== */
+
         .hero {
-            text-align: center;
+            min-height: 720px;
+            display: flex;
+            align-items: center;
+            padding: 140px 0 100px;
+
+            background:
+                linear-gradient(
+                    rgba(15, 23, 42, 0.78),
+                    rgba(15, 23, 42, 0.78)
+                ),
+                url("{% static 'core/images/hero.jpg' %}");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            color: #fff;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(219, 234, 254, 0.15);
+            color: #BFDBFE;
+            border: 1px solid rgba(191, 219, 254, 0.35);
+            font-weight: 700;
+            border-radius: 50px;
+            padding: 0.55rem 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 span {
+            color: #60A5FA;
         }
 
         .hero-text {
-            margin-left: auto;
-            margin-right: auto;
+            color: #E2E8F0;
+            font-size: 1.1rem;
+            max-width: 620px;
         }
 
-        .hero-image {
-            margin-top: 3rem;
-            max-height: 400px;
+        /* Hero content sits above background */
+        .hero .container {
+            position: relative;
+            z-index: 2;
         }
-    }
-</style>
 
+        /* ==================== SECTIONS ==================== */
+
+        .section-padding {
+            padding: 90px 0;
+        }
+
+        .section-title {
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-subtitle {
+            color: var(--takalink-slate);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Feature cards */
+        .feature-card {
+            height: 100%;
+            background: #fff;
+            border: 1px solid var(--takalink-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #DBEAFE;
+            color: var(--takalink-blue);
+            border-radius: 14px;
+            font-size: 1.8rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .feature-card h4 {
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            color: var(--takalink-slate);
+            font-size: 0.95rem;
+        }
+
+        /* How it works */
+        .workflow-section {
+            background: var(--takalink-navy);
+            color: #fff;
+        }
+
+        .workflow-section .section-subtitle {
+            color: #CBD5E1;
+        }
+
+        .workflow-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 1.25rem;
+            border-radius: 50%;
+            background: var(--takalink-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        .workflow-step h5 {
+            font-weight: 700;
+        }
+
+        .workflow-step p {
+            color: #CBD5E1;
+            font-size: 0.9rem;
+        }
+
+        /* About */
+        .about-card {
+            background: #fff;
+            border: 1px solid var(--takalink-border);
+            border-radius: 18px;
+            padding: 3rem;
+        }
+
+        .about-icon {
+            font-size: 3rem;
+            color: var(--takalink-blue);
+        }
+
+        /* ==================== PRODUCT SHOWCASE ==================== */
+
+        .showcase-card {
+            height: 100%;
+            background: #fff;
+            border: 1px solid var(--takalink-border);
+            border-radius: 18px;
+            padding: 1rem;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .showcase-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .showcase-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+
+        /* Contact */
+        .contact-section {
+            background: #fff;
+        }
+
+        .contact-card {
+            height: 100%;
+            background: var(--takalink-background);
+            border: 1px solid var(--takalink-border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .contact-icon {
+            color: var(--takalink-blue);
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+        }
+
+        .contact-card a {
+            color: var(--takalink-navy);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-card a:hover {
+            color: var(--takalink-blue);
+        }
+
+        /* Final CTA */
+        .cta-section {
+            background: var(--takalink-blue);
+            color: #fff;
+            padding: 90px 0;
+        }
+
+        .cta-section p {
+            color: #DBEAFE;
+        }
+
+        .btn-light-takalink {
+            background: #fff;
+            color: var(--takalink-blue);
+            border: none;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 0.85rem 1.6rem;
+        }
+
+        .btn-light-takalink:hover {
+            background: #EFF6FF;
+            color: var(--takalink-hover);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--takalink-navy);
+            color: #CBD5E1;
+            padding: 2rem 0;
+        }
+
+        footer a {
+            color: #CBD5E1;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #fff;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+
+        @media (max-width: 991px) {
+
+            .navbar .nav-link {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            .hero {
+                min-height: 700px;
+                text-align: center;
+                background-position: center;
+            }
+
+            .hero-text {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (max-width: 576px) {
+
+            .hero {
+                min-height: 680px;
+                padding: 130px 0 80px;
+                background-position: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text {
+                font-size: 1rem;
+            }
+
+            .about-card {
+                padding: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
 
 </head>
 
@@ -366,564 +415,799 @@
 <!-- ==================== NAVIGATION ==================== -->
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+
     <div class="container">
 
+        <a class="navbar-brand" href="#page-top">
+            <img
+                src="{% static 'core/images/logo-dark.svg' %}"
+                alt="TakaLink"
+            >
+        </a>
 
-    <a class="navbar-brand" href="#page-top">
-        <img src="{% static 'core/images/logo-dark.svg' %}" alt="TakaLink">
-    </a>
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTakaLink"
+            aria-controls="navbarTakaLink"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarTakaLink"
-        aria-controls="navbarTakaLink"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-    >
-        <span class="navbar-toggler-icon"></span>
-    </button>
+        <div class="collapse navbar-collapse" id="navbarTakaLink">
 
-    <div class="collapse navbar-collapse" id="navbarTakaLink">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
 
-        <ul class="navbar-nav ms-auto align-items-lg-center">
-
-            <li class="nav-item">
-                <a class="nav-link" href="#features">Features</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#how-it-works">How It Works</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#about">About</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#contact">Contact</a>
-            </li>
-
-            {% if user.is_authenticated %}
-
-                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                    <a class="btn btn-takalink" href="{% url 'dashboard' %}">
-                        Dashboard
+                <li class="nav-item">
+                    <a class="nav-link" href="#features">
+                        Features
                     </a>
                 </li>
 
-            {% else %}
-
-                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
-                    <a class="btn btn-outline-light me-lg-2" href="{% url 'login' %}">
-                        Log In
+                <li class="nav-item">
+                    <a class="nav-link" href="#how-it-works">
+                        How It Works
                     </a>
                 </li>
 
-                <li class="nav-item mt-2 mt-lg-0">
-                    <a class="btn btn-takalink" href="{% url 'signup' %}?type=resident">
-                        Get Started
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">
+                        About
                     </a>
                 </li>
 
-            {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">
+                        Contact
+                    </a>
+                </li>
 
-        </ul>
+                {% if user.is_authenticated %}
+
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a
+                            class="btn btn-takalink"
+                            href="{% url 'dashboard' %}"
+                        >
+                            Dashboard
+                        </a>
+                    </li>
+
+                {% else %}
+
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <a
+                            class="btn btn-outline-light me-lg-2"
+                            href="{% url 'login' %}"
+                        >
+                            Log In
+                        </a>
+                    </li>
+
+                    <li class="nav-item mt-2 mt-lg-0">
+                        <a
+                            class="btn btn-takalink"
+                            href="{% url 'signup' %}?type=resident"
+                        >
+                            Get Started
+                        </a>
+                    </li>
+
+                {% endif %}
+
+            </ul>
+
+        </div>
 
     </div>
-</div>
-
 
 </nav>
+
 
 <!-- ==================== HERO ==================== -->
 
 <header class="hero" id="page-top">
+
     <div class="container">
-        <div class="row align-items-center g-5">
 
+        <div class="row justify-content-center">
 
-        <div class="col-lg-6">
+            <div class="col-lg-9">
 
-            <div class="hero-badge">
-                <i class="bi bi-recycle me-2"></i>
-                Smart Waste Collection
+                <div class="hero-badge">
+                    <i class="bi bi-recycle me-2"></i>
+                    Smart Waste Collection
+                </div>
+
+                <h1>
+                    Smarter Waste Collection.
+                    <span>Cleaner Communities.</span>
+                </h1>
+
+                <p class="hero-text mt-4 mx-auto">
+                    TakaLink connects residents and waste collectors through
+                    a smarter, more organized waste collection experience.
+                </p>
+
+                <div class="d-flex flex-wrap gap-3 mt-4 justify-content-center">
+
+                    {% if user.is_authenticated %}
+
+                        <a
+                            class="btn btn-takalink btn-lg"
+                            href="{% url 'dashboard' %}"
+                        >
+                            Go to Dashboard
+                        </a>
+
+                    {% else %}
+
+                        <a
+                            class="btn btn-takalink btn-lg"
+                            href="{% url 'signup' %}?type=resident"
+                        >
+                            Get Started
+                        </a>
+
+                        <a
+                            class="btn btn-outline-light btn-lg"
+                            href="{% url 'login' %}"
+                        >
+                            Log In
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
             </div>
-
-            <h1>
-                Smarter Waste Collection.
-                <span>Cleaner Communities.</span>
-            </h1>
-
-            <p class="hero-text mt-4">
-                TakaLink connects residents and waste collectors through
-                a smarter, more organized waste collection experience.
-            </p>
-
-            <div class="d-flex flex-wrap gap-3 mt-4 justify-content-lg-start justify-content-center">
-
-                {% if user.is_authenticated %}
-
-                    <a class="btn btn-takalink btn-lg" href="{% url 'dashboard' %}">
-                        Go to Dashboard
-                    </a>
-
-                {% else %}
-
-                    <a class="btn btn-takalink btn-lg" href="{% url 'signup' %}?type=resident">
-                        Get Started
-                    </a>
-
-                    <a class="btn btn-outline-takalink btn-lg" href="{% url 'login' %}">
-                        Log In
-                    </a>
-
-                {% endif %}
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-6 text-center">
-
-            <!-- Replace this path after downloading your hero image -->
-            <img
-                src="{% static 'core/images/takalink-hero.png' %}"
-                class="hero-image"
-                alt="TakaLink smart waste collection"
-            >
 
         </div>
 
     </div>
-</div>
-
 
 </header>
+
 
 <!-- ==================== FEATURES ==================== -->
 
 <section class="section-padding" id="features">
+
     <div class="container">
 
+        <div class="text-center">
 
-    <div class="text-center">
-        <h2 class="section-title">Everything in one place.</h2>
+            <h2 class="section-title">
+                Everything in one place.
+            </h2>
 
-        <p class="section-subtitle">
-            TakaLink brings residents, waste collection and responsible
-            waste management together in one platform.
-        </p>
+            <p class="section-subtitle">
+                TakaLink brings residents, waste collection and responsible
+                waste management together in one platform.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-calendar2-check"></i>
+                    </div>
+
+                    <h4>
+                        Collection Requests
+                    </h4>
+
+                    <p>
+                        Residents can submit waste collection requests with
+                        the details collectors need to complete the job.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-stars"></i>
+                    </div>
+
+                    <h4>
+                        Smart Classification
+                    </h4>
+
+                    <p>
+                        TakaLink uses AI-assisted classification to identify
+                        the type of waste in a collection request.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+
+                    <h4>
+                        Collector Management
+                    </h4>
+
+                    <p>
+                        Collectors can manage pending jobs, active
+                        collections and completed waste collection records.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </div>
+
+                    <h4>
+                        Waste Reporting
+                    </h4>
+
+                    <p>
+                        Residents can report waste problems and illegal
+                        dumping, including location and optional photo evidence.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-award"></i>
+                    </div>
+
+                    <h4>
+                        Green Points
+                    </h4>
+
+                    <p>
+                        Responsible waste practices can earn residents
+                        Green Points and help them progress through milestones.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        <i class="bi bi-robot"></i>
+                    </div>
+
+                    <h4>
+                        Taka AI
+                    </h4>
+
+                    <p>
+                        Get assistance with collection requests, recycling,
+                        waste reports, Green Points and common questions.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-
-    <div class="row g-4">
-
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="bi bi-calendar2-check"></i>
-                </div>
-                <h4>Collection Requests</h4>
-                <p>
-                    Residents can submit waste collection requests with
-                    the details collectors need to complete the job.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="bi bi-stars"></i>
-                </div>
-                <h4>Smart Classification</h4>
-                <p>
-                    TakaLink uses AI-assisted classification to identify
-                    the type of waste in a collection request.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="bi bi-truck"></i>
-                </div>
-                <h4>Collector Management</h4>
-                <p>
-                    Collectors can manage pending jobs, active
-                    collections and completed waste collection records.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="bi bi-exclamation-triangle"></i>
-                </div>
-                <h4>Waste Reporting</h4>
-                <p>
-                    Residents can report waste problems and illegal
-                    dumping, including location and optional photo evidence.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="bi bi-award"></i>
-                </div>
-                <h4>Green Points</h4>
-                <p>
-                    Responsible waste practices can earn residents
-                    Green Points and help them progress through milestones.
-                </p>
-            </div>
-        </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="bi bi-robot"></i>
-                </div>
-                <h4>Taka AI</h4>
-                <p>
-                    Get assistance with collection requests, recycling,
-                    waste reports, Green Points and common questions.
-                </p>
-            </div>
-        </div>
-
-    </div>
-</div>
-
 
 </section>
+
 
 <!-- ==================== HOW IT WORKS ==================== -->
 
-<section class="section-padding workflow-section" id="how-it-works">
+<section
+    class="section-padding workflow-section"
+    id="how-it-works"
+>
+
     <div class="container">
 
+        <div class="text-center">
 
-    <div class="text-center">
-        <h2 class="section-title">How TakaLink Works</h2>
+            <h2 class="section-title">
+                How TakaLink Works
+            </h2>
 
-        <p class="section-subtitle">
-            From a collection request to completed collection,
-            TakaLink keeps the process organized and visible.
-        </p>
+            <p class="section-subtitle">
+                From a collection request to completed collection,
+                TakaLink keeps the process organized and visible.
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-6 col-lg-2">
+
+                <div class="workflow-step">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <h5>
+                        Request
+                    </h5>
+
+                    <p>
+                        Resident submits a collection request.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-6 col-lg-2">
+
+                <div class="workflow-step">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    <h5>
+                        Classify
+                    </h5>
+
+                    <p>
+                        Waste type is identified.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-6 col-lg-2">
+
+                <div class="workflow-step">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    <h5>
+                        Accept
+                    </h5>
+
+                    <p>
+                        Collector accepts the pending job.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-6 col-lg-2">
+
+                <div class="workflow-step">
+
+                    <div class="step-number">
+                        04
+                    </div>
+
+                    <h5>
+                        Collect
+                    </h5>
+
+                    <p>
+                        Collector starts and records the collection.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-6 col-lg-2">
+
+                <div class="workflow-step">
+
+                    <div class="step-number">
+                        05
+                    </div>
+
+                    <h5>
+                        Complete
+                    </h5>
+
+                    <p>
+                        Collection is marked completed.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-6 col-lg-2">
+
+                <div class="workflow-step">
+
+                    <div class="step-number">
+                        06
+                    </div>
+
+                    <h5>
+                        Earn
+                    </h5>
+
+                    <p>
+                        Responsible actions can earn Green Points.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
-
-    <div class="row g-4">
-
-        <div class="col-6 col-lg-2">
-            <div class="workflow-step">
-                <div class="step-number">01</div>
-                <h5>Request</h5>
-                <p>Resident submits a collection request.</p>
-            </div>
-        </div>
-
-        <div class="col-6 col-lg-2">
-            <div class="workflow-step">
-                <div class="step-number">02</div>
-                <h5>Classify</h5>
-                <p>Waste type is identified.</p>
-            </div>
-        </div>
-
-        <div class="col-6 col-lg-2">
-            <div class="workflow-step">
-                <div class="step-number">03</div>
-                <h5>Accept</h5>
-                <p>Collector accepts the pending job.</p>
-            </div>
-        </div>
-
-        <div class="col-6 col-lg-2">
-            <div class="workflow-step">
-                <div class="step-number">04</div>
-                <h5>Collect</h5>
-                <p>Collector starts and records the collection.</p>
-            </div>
-        </div>
-
-        <div class="col-6 col-lg-2">
-            <div class="workflow-step">
-                <div class="step-number">05</div>
-                <h5>Complete</h5>
-                <p>Collection is marked completed.</p>
-            </div>
-        </div>
-
-        <div class="col-6 col-lg-2">
-            <div class="workflow-step">
-                <div class="step-number">06</div>
-                <h5>Earn</h5>
-                <p>Responsible actions can earn Green Points.</p>
-            </div>
-        </div>
-
-    </div>
-</div>
-
 
 </section>
+
 
 <!-- ==================== ABOUT ==================== -->
 
 <section class="section-padding" id="about">
+
     <div class="container">
 
+        <div class="text-center">
 
-    <div class="text-center">
-        <h2 class="section-title">Why TakaLink?</h2>
+            <h2 class="section-title">
+                Why TakaLink?
+            </h2>
 
-        <p class="section-subtitle">
-            Better waste management starts with better coordination.
-        </p>
-    </div>
+            <p class="section-subtitle">
+                Better waste management starts with better coordination.
+            </p>
 
-    <div class="about-card">
+        </div>
 
-        <div class="row align-items-center g-5">
+        <div class="about-card">
 
-            <div class="col-lg-2 text-center">
-                <i class="bi bi-recycle about-icon"></i>
-            </div>
+            <div class="row align-items-center g-5">
 
-            <div class="col-lg-10">
+                <div class="col-lg-2 text-center">
 
-                <h3 class="fw-bold">
-                    Connecting people with smarter waste collection.
-                </h3>
+                    <i class="bi bi-recycle about-icon"></i>
 
-                <p class="text-muted mb-0">
-                    TakaLink provides a structured platform for residents
-                    to request waste collection, collectors to manage
-                    their jobs, and communities to participate in
-                    responsible waste management.
-                </p>
+                </div>
+
+                <div class="col-lg-10">
+
+                    <h3 class="fw-bold">
+                        Connecting people with smarter waste collection.
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        TakaLink provides a structured platform for residents
+                        to request waste collection, collectors to manage
+                        their jobs, and communities to participate in
+                        responsible waste management.
+                    </p>
+
+                </div>
 
             </div>
 
         </div>
 
     </div>
-</div>
-
 
 </section>
+
 
 <!-- ==================== PRODUCT SHOWCASE ==================== -->
 
-<section class="section-padding bg-white" id="showcase">
+<section
+    class="section-padding bg-white"
+    id="showcase"
+>
+
     <div class="container">
 
+        <div class="text-center">
 
-    <div class="text-center">
-        <h2 class="section-title">See TakaLink in Action</h2>
+            <h2 class="section-title">
+                See TakaLink in Action
+            </h2>
 
-        <p class="section-subtitle">
-            Explore the platform built to make waste collection
-            simpler, smarter and more transparent.
-        </p>
-    </div>
+            <p class="section-subtitle">
+                Explore the platform built to make waste collection
+                simpler, smarter and more transparent.
+            </p>
 
-    <div class="row g-4">
-
-        <!-- Replace these placeholders with actual TakaLink screenshots -->
-        <div class="col-md-6">
-            <div class="showcase-placeholder">
-                <div>
-                    <i class="bi bi-window-stack fs-1 d-block mb-3"></i>
-                    <strong>Resident Dashboard Screenshot</strong>
-                    <p class="mb-0">
-                        Add the actual TakaLink screenshot here.
-                    </p>
-                </div>
-            </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="showcase-placeholder">
-                <div>
-                    <i class="bi bi-truck fs-1 d-block mb-3"></i>
-                    <strong>Collector Dashboard Screenshot</strong>
-                    <p class="mb-0">
-                        Add the actual TakaLink screenshot here.
-                    </p>
+        <div class="row g-4">
+
+            <!-- Resident Dashboard -->
+
+            <div class="col-md-6">
+
+                <div class="showcase-card">
+
+                    <img
+                        src="{% static 'core/images/Resident Dashboard.png' %}"
+                        class="img-fluid rounded"
+                        alt="TakaLink Resident Dashboard"
+                    >
+
+                    <div class="pt-3">
+
+                        <h5 class="fw-bold mb-1">
+                            Resident Dashboard
+                        </h5>
+
+                        <p class="mb-0 text-muted">
+                            Residents can request collections, track their waste,
+                            earn Green Points, and manage their reports.
+                        </p>
+
+                    </div>
+
                 </div>
+
             </div>
+
+
+            <!-- Collector Dashboard -->
+
+            <div class="col-md-6">
+
+                <div class="showcase-card">
+
+                    <img
+                        src="{% static 'core/images/Collector Dashboard.png' %}"
+                        class="img-fluid rounded"
+                        alt="TakaLink Collector Dashboard"
+                    >
+
+                    <div class="pt-3">
+
+                        <h5 class="fw-bold mb-1">
+                            Collector Dashboard
+                        </h5>
+
+                        <p class="mb-0 text-muted">
+                            Collectors can manage pending requests, active jobs,
+                            collections, and completed work.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>
-
-</div>
-
 
 </section>
+
 
 <!-- ==================== CONTACT ==================== -->
 
-<section class="section-padding contact-section" id="contact">
+<section
+    class="section-padding contact-section"
+    id="contact"
+>
+
     <div class="container">
 
+        <div class="text-center">
 
-    <div class="text-center">
-        <h2 class="section-title">Get in Touch</h2>
+            <h2 class="section-title">
+                Get in Touch
+            </h2>
 
-        <p class="section-subtitle">
-            Have a question about TakaLink? We'd love to hear from you.
-        </p>
-    </div>
+            <p class="section-subtitle">
+                Have a question about TakaLink? We'd love to hear from you.
+            </p>
 
-    <div class="row g-4 justify-content-center">
-
-        <div class="col-md-4">
-            <div class="contact-card text-center">
-
-                <i class="bi bi-envelope contact-icon"></i>
-
-                <h5 class="fw-bold mt-3">Email</h5>
-
-                <a href="mailto:excelskennedy@gmail.com">
-                    excelskennedy@gmail.com
-                </a>
-
-            </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="contact-card text-center">
+        <div class="row g-4 justify-content-center">
 
-                <i class="bi bi-telephone contact-icon"></i>
+            <div class="col-md-4">
 
-                <h5 class="fw-bold mt-3">Phone</h5>
+                <div class="contact-card text-center">
 
-                <a href="tel:+254719534660">
-                    0719534660
-                </a>
+                    <i class="bi bi-envelope contact-icon"></i>
+
+                    <h5 class="fw-bold mt-3">
+                        Email
+                    </h5>
+
+                    <a href="mailto:excelskennedy@gmail.com">
+                        excelskennedy@gmail.com
+                    </a>
+
+                </div>
 
             </div>
+
+
+            <div class="col-md-4">
+
+                <div class="contact-card text-center">
+
+                    <i class="bi bi-telephone contact-icon"></i>
+
+                    <h5 class="fw-bold mt-3">
+                        Phone
+                    </h5>
+
+                    <a href="tel:+254719534660">
+                        0719534660
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="contact-card text-center">
+
+                    <i class="bi bi-geo-alt contact-icon"></i>
+
+                    <h5 class="fw-bold mt-3">
+                        Location
+                    </h5>
+
+                    <span class="text-muted">
+                        Kitale, Kenya
+                    </span>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="col-md-4">
-            <div class="contact-card text-center">
+        <div class="text-center mt-5">
 
-                <i class="bi bi-geo-alt contact-icon"></i>
+            <a
+                href="mailto:excelskennedy@gmail.com?subject=TakaLink%20Inquiry"
+                class="btn btn-takalink btn-lg"
+            >
+                <i class="bi bi-envelope me-2"></i>
+                Send Email
+            </a>
 
-                <h5 class="fw-bold mt-3">Location</h5>
-
-                <span class="text-muted">
-                    Kitale, Kenya
-                </span>
-
-            </div>
         </div>
 
     </div>
-
-    <div class="text-center mt-5">
-        <a
-            href="mailto:excelskennedy@gmail.com?subject=TakaLink%20Inquiry"
-            class="btn btn-takalink btn-lg"
-        >
-            <i class="bi bi-envelope me-2"></i>
-            Send Email
-        </a>
-    </div>
-
-</div>
-
 
 </section>
+
 
 <!-- ==================== FINAL CTA ==================== -->
 
 <section class="cta-section text-center">
+
     <div class="container">
 
+        {% if user.is_authenticated %}
 
-    {% if user.is_authenticated %}
+            <h2 class="fw-bold display-5">
+                Welcome back to TakaLink.
+            </h2>
 
-        <h2 class="fw-bold display-5">
-            Welcome back to TakaLink.
-        </h2>
+            <p class="lead mt-3">
+                Continue managing your waste collection journey.
+            </p>
 
-        <p class="lead mt-3">
-            Continue managing your waste collection journey.
-        </p>
+            <a
+                href="{% url 'dashboard' %}"
+                class="btn btn-light-takalink btn-lg mt-3"
+            >
+                Go to Dashboard
+            </a>
 
-        <a
-            href="{% url 'dashboard' %}"
-            class="btn btn-light-takalink btn-lg mt-3"
-        >
-            Go to Dashboard
-        </a>
+        {% else %}
 
-    {% else %}
+            <h2 class="fw-bold display-5">
+                Ready for smarter waste collection?
+            </h2>
 
-        <h2 class="fw-bold display-5">
-            Ready for smarter waste collection?
-        </h2>
+            <p class="lead mt-3">
+                Join TakaLink and take a smarter approach to waste collection.
+            </p>
 
-        <p class="lead mt-3">
-            Join TakaLink and take a smarter approach to waste collection.
-        </p>
+            <a
+                href="{% url 'signup' %}?type=resident"
+                class="btn btn-light-takalink btn-lg mt-3"
+            >
+                Get Started
+            </a>
 
-        <a
-            href="{% url 'signup' %}?type=resident"
-            class="btn btn-light-takalink btn-lg mt-3"
-        >
-            Get Started
-        </a>
+        {% endif %}
 
-    {% endif %}
-
-</div>
-
+    </div>
 
 </section>
+
 
 <!-- ==================== FOOTER ==================== -->
 
 <footer>
+
     <div class="container">
 
+        <div class="row align-items-center g-3">
 
-    <div class="row align-items-center g-3">
+            <div class="col-md-6 text-center text-md-start">
+                © 2026 TakaLink. All rights reserved.
+            </div>
 
-        <div class="col-md-6 text-center text-md-start">
-            © 2026 TakaLink. All rights reserved.
-        </div>
+            <div class="col-md-6 text-center text-md-end">
 
-        <div class="col-md-6 text-center text-md-end">
+                <a href="#features" class="me-3">
+                    Features
+                </a>
 
-            <a href="#features" class="me-3">
-                Features
-            </a>
+                <a href="#about" class="me-3">
+                    About
+                </a>
 
-            <a href="#about" class="me-3">
-                About
-            </a>
+                <a href="#contact">
+                    Contact
+                </a>
 
-            <a href="#contact">
-                Contact
-            </a>
+            </div>
 
         </div>
 
     </div>
 
-</div>
-
-
 </footer>
+
 
 <!-- Bootstrap JS -->
 
