@@ -1,48 +1,195 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Green Points History - TakaLink</title>
-</head>
-<body>
+{% extends "core/base.html" %}
 
-    <h1>♻️ TakaLink</h1>
+{% block title %}Green Points History | TakaLink{% endblock %}
 
-    <h2>Green Points History</h2>
+{% block page_title %}Green Points History{% endblock %}
 
-    <p>
-        Total Points:
-        <strong>{{ request.user.resident_profile.points }}</strong>
-    </p>
+{% block content %}
 
-    {% if rewards %}
-        <table border="1" cellpadding="8">
-            <thead>
-                <tr>
-                    <th>Points</th>
-                    <th>Reason</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
+<!-- Page introduction -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-1">
+                    <i class="bi bi-leaf-fill text-success me-2"></i>
+                    Green Points History
+                </h4>
 
-            <tbody>
-                {% for reward in rewards %}
+                <p class="text-secondary mb-0">
+                    Track the Green Points you've earned through your
+                    environmentally responsible actions.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Total Green Points -->
+<div class="row mb-4">
+
+    <div class="col-md-4">
+
+        <div class="info-box shadow-sm">
+
+            <span class="info-box-icon text-bg-success">
+                <i class="bi bi-leaf-fill"></i>
+            </span>
+
+            <div class="info-box-content">
+
+                <span class="info-box-text">
+                    Total Green Points
+                </span>
+
+                <span class="info-box-number">
+                    {{ request.user.resident_profile.points }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% if rewards %}
+
+<!-- Green Points History Table -->
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        <h3 class="card-title">
+            <i class="bi bi-clock-history me-2"></i>
+            Points Earned
+        </h3>
+
+        <div class="card-tools">
+
+            <span class="badge text-bg-success">
+                {{ rewards|length }}
+                Reward{{ rewards|length|pluralize }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="card-body p-0">
+
+        <div class="table-responsive">
+
+            <table class="table table-hover table-striped mb-0">
+
+                <thead>
+
                     <tr>
-                        <td>+{{ reward.points }}</td>
-                        <td>{{ reward.reason }}</td>
-                        <td>{{ reward.created_at|date:"d M Y, H:i" }}</td>
+                        <th>Points</th>
+                        <th>Reason</th>
+                        <th>Date</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>You haven't earned any Green Points yet.</p>
-    {% endif %}
 
-    <p>
-        <a href="{% url 'resident_dashboard' %}">
-            ← Back to Dashboard
+                </thead>
+
+
+                <tbody>
+
+                    {% for reward in rewards %}
+
+                        <tr>
+
+                            <td>
+                                <span class="badge text-bg-success">
+                                    +{{ reward.points }}
+                                </span>
+                            </td>
+
+
+                            <td>
+                                <i class="bi bi-leaf text-success me-2"></i>
+                                {{ reward.reason }}
+                            </td>
+
+
+                            <td>
+
+                                <small>
+                                    {{ reward.created_at|date:"d M Y" }}
+                                    <br>
+                                    <span class="text-secondary">
+                                        {{ reward.created_at|time:"g:i A" }}
+                                    </span>
+                                </small>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <div class="card-footer">
+
+        <a
+            href="{% url 'resident_dashboard' %}"
+            class="btn btn-outline-secondary"
+        >
+            <i class="bi bi-arrow-left me-1"></i>
+            Dashboard
         </a>
-    </p>
 
-</body>
-</html>
+    </div>
+
+</div>
+
+
+{% else %}
+
+<!-- Empty state -->
+<div class="card shadow-sm">
+
+    <div class="card-body text-center py-5">
+
+        <i
+            class="bi bi-leaf text-secondary"
+            style="font-size: 4rem;"
+        ></i>
+
+        <h4 class="mt-3">
+            No Green Points Yet
+        </h4>
+
+        <p class="text-secondary">
+            You haven't earned any Green Points yet.
+            Complete collections and make responsible choices
+            to start earning points.
+        </p>
+
+        <a
+            href="{% url 'resident_dashboard' %}"
+            class="btn btn-takalink"
+        >
+            <i class="bi bi-speedometer2 me-1"></i>
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
