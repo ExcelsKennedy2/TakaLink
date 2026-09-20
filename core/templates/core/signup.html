@@ -1,55 +1,254 @@
-<!DOCTYPE html>
+{% load static %}
+
+<!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>{{ title }} | TakaLink</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="{% static 'core/css/adminlte.css' %}">
+
+    <style>
+        :root {
+            --takalink-blue: #2563EB;
+            --takalink-navy: #0F172A;
+            --takalink-slate: #475569;
+        }
+
+        body {
+            color: var(--takalink-navy);
+        }
+
+        .takalink-signup-box {
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .takalink-logo {
+            max-width: 210px;
+            max-height: 70px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .takalink-card {
+            border-top: 3px solid var(--takalink-blue);
+        }
+
+        .takalink-section-title {
+            color: var(--takalink-navy);
+            font-weight: 600;
+        }
+
+        .takalink-submit {
+            background-color: var(--takalink-blue);
+            border-color: var(--takalink-blue);
+            color: #fff;
+        }
+
+        .takalink-submit:hover {
+            background-color: #1D4ED8;
+            border-color: #1D4ED8;
+            color: #fff;
+        }
+
+        .takalink-link {
+            color: var(--takalink-blue);
+            text-decoration: none;
+        }
+
+        .takalink-link:hover {
+            color: #1D4ED8;
+            text-decoration: underline;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--takalink-blue);
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.15);
+        }
+
+        .field-errors {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+
+        .help-text {
+            color: var(--takalink-slate);
+            font-size: 0.8rem;
+        }
+    </style>
 </head>
-<body>
 
-    <h1>♻️ TakaLink</h1>
-    <h2>{{ title }}</h2>
 
-    <form method="post">
-        {% csrf_token %}
+<body class="bg-body-secondary">
 
-        {{ form.non_field_errors }}
+    <main class="container py-4 py-md-5">
 
-        {% for field in form %}
-            <p>
-                {{ field.label_tag }}<br>
-                {{ field }}
+        <div class="takalink-signup-box mx-auto">
 
-                {% if field.help_text %}
-                    <small>{{ field.help_text }}</small>
-                {% endif %}
+            <div class="card card-outline takalink-card shadow-sm">
 
-                {% for error in field.errors %}
-                    <br>
-                    <span>{{ error }}</span>
-                {% endfor %}
-            </p>
-        {% endfor %}
+                <!-- Logo -->
+                <div class="card-header text-center py-4">
 
-        <button type="submit">Create Account</button>
-    </form>
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'core/images/logo.svg' %}" alt="TakaLink" class="takalink-logo">
+                    </a>
 
-    <p>
-        Already have an account?
-        <a href="{% url 'login' %}">Login</a>
-    </p>
+                </div>
 
-    {% if account_type == "resident" %}
-        <p>
-            Register as a
-            <a href="{% url 'signup' %}?type=collector">Collector instead</a>
-        </p>
-    {% else %}
-        <p>
-            Register as a
-            <a href="{% url 'signup' %}?type=resident">Resident instead</a>
-        </p>
-    {% endif %}
+
+                <div class="card-body p-4 p-md-5">
+
+                    <!-- Heading -->
+                    <div class="text-center mb-4">
+
+                        <h3 class="takalink-section-title mb-1">
+                            {{ title }}
+                        </h3>
+
+                        <p class="text-body-secondary mb-0">
+                            Create your TakaLink account to get started.
+                        </p>
+
+                    </div>
+
+
+                    <!-- Form errors -->
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                        {% for error in form.non_field_errors %}
+                        <div>{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+                    {% endif %}
+
+
+                    <form method="post">
+
+                        {% csrf_token %}
+
+
+                        {% for field in form %}
+
+                        <div class="mb-3">
+
+                            <label for="{{ field.id_for_label }}" class="form-label fw-semibold">
+                                {{ field.label }}
+
+                                {% if field.field.required %}
+                                <span class="text-danger">*</span>
+                                {% endif %}
+                            </label>
+
+
+                            {{ field }}
+
+
+                            {% if field.help_text %}
+                            <div class="help-text mt-1">
+                                {{ field.help_text|safe }}
+                            </div>
+                            {% endif %}
+
+
+                            {% if field.errors %}
+                            <div class="field-errors mt-1">
+
+                                {% for error in field.errors %}
+                                <div>
+                                    <i class="bi bi-exclamation-circle me-1"></i>
+                                    {{ error }}
+                                </div>
+                                {% endfor %}
+
+                            </div>
+                            {% endif %}
+
+                        </div>
+
+                        {% endfor %}
+
+
+                        <!-- Submit -->
+                        <div class="d-grid mt-4">
+
+                            <button type="submit" class="btn takalink-submit btn-lg">
+                                <i class="bi bi-person-plus-fill me-2"></i>
+                                Create Account
+                            </button>
+
+                        </div>
+
+                    </form>
+
+
+                    <hr class="my-4">
+
+
+                    <!-- Login -->
+                    <p class="text-center mb-2">
+                        Already have an account?
+                    </p>
+
+                    <div class="d-grid">
+
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>
+                            Login
+                        </a>
+
+                    </div>
+
+                    <p class="text-center mt-4 mb-0">
+
+                        <a href="{% url 'signup' %}?type=resident" class="takalink-link fw-semibold">
+
+                        </a>
+
+
+
+                    </p>
+
+
+                    <!-- Back -->
+                    <p class="text-center mt-3 mb-0">
+
+                        <a href="{% url 'home' %}" class="takalink-link">
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Back to TakaLink
+                        </a>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

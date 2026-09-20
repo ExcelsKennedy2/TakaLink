@@ -1,53 +1,223 @@
-<!DOCTYPE html>
+{% load static %}
+
+
+<!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Login | TakaLink</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    >
+
+    <!-- AdminLTE -->
+    <link
+        rel="stylesheet"
+        href="{% static 'core/css/adminlte.css' %}"
+    >
+
+    <style>
+    :root {
+        --takalink-blue: #2563EB;
+        --takalink-navy: #0F172A;
+        --takalink-slate: #475569;
+        --takalink-background: #F8FAFC;
+    }
+
+    body.login-page {
+        color: var(--takalink-navy);
+    }
+
+    .takalink-logo {
+        max-width: 210px;
+        max-height: 70px;
+        object-fit: contain;
+    }
+
+    .takalink-login-card {
+        border-top: 3px solid var(--takalink-blue);
+        background-color: #FFFFFF;
+    }
+
+    .takalink-login-btn {
+        background-color: var(--takalink-blue);
+        border-color: var(--takalink-blue);
+    }
+
+    .takalink-login-btn:hover {
+        background-color: #1D4ED8;
+        border-color: #1D4ED8;
+    }
+
+    .takalink-link {
+        color: var(--takalink-blue);
+        text-decoration: none;
+    }
+
+    .takalink-link:hover {
+        color: #1D4ED8;
+        text-decoration: underline;
+    }
+
+    .login-box-msg {
+        color: var(--takalink-slate);
+    }
+</style>
 </head>
-<body>
 
-    <h1>♻️ TakaLink</h1>
-    <h2>Login</h2>
+<body class="login-page bg-body-secondary">
 
-    {% if error %}
-        <p>{{ error }}</p>
-    {% endif %}
+    <main class="login-box">
 
-    <form method="post">
-        {% csrf_token %}
+        <div class="card card-outline takalink-login-card shadow-sm">
 
-        <p>
-            <label for="username">Username</label><br>
-            <input
-                type="text"
-                id="username"
-                name="username"
-                required
-            >
-        </p>
+            <!-- Logo -->
+            <div class="card-header text-center py-4">
 
-        <p>
-            <label for="password">Password</label><br>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                required
-            >
-        </p>
+                <a href="{% url 'home' %}">
+                    <img
+                        src="{% static 'core/images/logo.svg' %}"
+                        alt="TakaLink"
+                        class="takalink-logo"
+                    >
+                </a>
 
-        <button type="submit">Login</button>
-    </form>
+            </div>
 
-    <p>
-        Don't have an account?
-        <a href="{% url 'signup' %}?type=resident">Create a resident account</a>
-    </p>
+            <div class="card-body login-card-body">
 
-    <p>
-        <a href="{% url 'home' %}">Back to TakaLink</a>
-    </p>
+                <p class="login-box-msg">
+                    Sign in to continue to TakaLink
+                </p>
+
+                {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        {{ error }}
+                    </div>
+                {% endif %}
+
+                <form method="post">
+
+                    {% csrf_token %}
+
+                    <!-- Username -->
+                    <div class="input-group mb-3">
+
+                        <div class="form-floating flex-grow-1">
+                            <input
+                                type="text"
+                                id="username"
+                                name="username"
+                                class="form-control"
+                                placeholder="Username"
+                                required
+                                autofocus
+                            >
+                            <label for="username">
+                                Username
+                            </label>
+                        </div>
+
+                        <span class="input-group-text">
+                            <i class="bi bi-person-fill"></i>
+                        </span>
+
+                    </div>
+
+                    <!-- Password -->
+                    <div class="input-group mb-3">
+
+                        <div class="form-floating flex-grow-1">
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                class="form-control"
+                                placeholder="Password"
+                                required
+                            >
+                            <label for="password">
+                                Password
+                            </label>
+                        </div>
+
+                        <span class="input-group-text">
+                            <i class="bi bi-lock-fill"></i>
+                        </span>
+
+                    </div>
+
+                    <!-- Login button -->
+                    <div class="d-grid">
+
+                        <button
+                            type="submit"
+                            class="btn takalink-login-btn text-white"
+                        >
+                            <i class="bi bi-box-arrow-in-right me-1"></i>
+                            Login
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <hr class="my-4">
+
+                <!-- Signup -->
+                <p class="text-center mb-2">
+                    Don't have an account?
+                </p>
+
+                <div class="d-grid">
+
+                    <a
+                        href="{% url 'signup' %}?type=resident"
+                        class="btn btn-outline-primary"
+                    >
+                        <i class="bi bi-person-plus me-1"></i>
+                        Create a Resident Account
+                    </a>
+
+                </div>
+
+                <!-- Back to landing page -->
+                <p class="text-center mt-4 mb-0">
+
+                    <a
+                        href="{% url 'home' %}"
+                        class="takalink-link"
+                    >
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Back to TakaLink
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Bootstrap -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    ></script>
 
 </body>
+
 </html>
