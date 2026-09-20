@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications - TakaLink</title>
+</head>
+<body>
+
+    <h1>🔔 TakaLink Notifications</h1>
+
+    {% if notifications %}
+        {% for notification in notifications %}
+            <div>
+                <h3>{{ notification.title }}</h3>
+
+                <p>{{ notification.message }}</p>
+
+                <small>
+                    {{ notification.created_at|date:"d M Y, H:i" }}
+                </small>
+
+                {% if not notification.is_read %}
+                    <p><strong>Unread</strong></p>
+                {% endif %}
+            </div>
+
+            <hr>
+        {% endfor %}
+    {% else %}
+        <p>You have no notifications yet.</p>
+    {% endif %}
+
+    <p>
+        <a href="{% url 'resident_dashboard' %}">
+            ← Back to Dashboard
+        </a>
+    </p>
+
+</body>
+</html>

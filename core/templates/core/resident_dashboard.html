@@ -42,6 +42,15 @@
             View Waste Report History
         </a>
     </p>
+    <p>
+       <a href="{% url 'notifications' %}">
+            🔔 Notifications
+            {% if unread_notifications_count > 0 %}
+                ({{ unread_notifications_count }})
+            {% endif %}
+        </a> 
+    </p>
+    
 
     {% if user.resident_profile %}
         <h3>Your Profile</h3>

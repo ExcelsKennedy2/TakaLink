@@ -11,7 +11,7 @@ from .forms import (
     CollectionItemForm,
 )
 
-from .models import WasteRequest, Collection, WasteReport, Reward, CollectionItem
+from .models import WasteRequest, Collection, WasteReport, Reward, CollectionItem, Notification
 
 def home(request):
     return render(request, "core/home.html")
@@ -101,11 +101,16 @@ def resident_dashboard(request):
 
     resident_profile = request.user.resident_profile
 
+    unread_notifications_count = request.user.notifications.filter(
+        is_read=False
+    ).count()
+
     return render(
         request,
         "core/resident_dashboard.html",
         {
             "resident_profile": resident_profile,
+            "unread_notifications_count": unread_notifications_count,
         },
     )
 
@@ -206,6 +211,22 @@ def green_points_history(request):
         },
     )
 
+@login_required
+def notifications(request):
+    user_notifications = request.user.notifications.order_by("-created_at")
+
+    request.user.notifications.filter(
+        is_read=False
+    ).update(is_read=True)
+
+    return render(
+        request,
+        "core/notifications.html",
+        {
+            "notifications": user_notifications,
+        },
+    )
+
 # Collector Views
 
 @login_required
@@ -257,6 +278,12 @@ def accept_collection(request, request_id):
 
     waste_request.status = WasteRequest.Status.ACCEPTED
     waste_request.save()
+
+    Notification.objects.create(
+        user=waste_request.resident,
+        title="Collection Request Accepted",
+        message="Your waste collection request has been accepted by a collector.",
+    )
 
     return redirect("collector_pending_jobs")
 
@@ -452,6 +479,12 @@ def complete_collection(request, collection_id):
         resident_profile.successful_collection_streak = 0
 
     resident_profile.save()
+
+    Notification.objects.create(
+        user=resident,
+        title="Collection Completed",
+        message="Your waste has been collected successfully. You have earned Green Points.",
+    )
 
     return redirect("collector_completed_jobs")
 

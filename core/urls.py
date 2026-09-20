@@ -44,6 +44,11 @@ urlpatterns = [
         views.green_points_history,
         name="green_points_history",
     ),
+    path(
+        "resident/notifications/",
+        views.notifications,
+        name="notifications",
+    ),
 
     # Collector URLs
 

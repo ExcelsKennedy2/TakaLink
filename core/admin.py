@@ -56,6 +56,12 @@ class WasteReportAdmin(admin.ModelAdmin):
                 obj.resident.resident_profile.points += 15
                 obj.resident.resident_profile.save()
 
+                Notification.objects.create(
+                    user=obj.resident,
+                    title="Waste Report Resolved",
+                    message="Your waste report has been reviewed and resolved. You have earned 15 Green Points.",
+                )
+
 admin.site.register(Reward)
 admin.site.register(Notification)
 admin.site.register(Payment)
