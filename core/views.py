@@ -87,6 +87,9 @@ def login_view(request):
 
 @login_required
 def dashboard(request):
+    if request.user.is_superuser:
+        return redirect("/admin/")
+
     if request.user.role == request.user.Role.RESIDENT:
         return redirect("resident_dashboard")
 
