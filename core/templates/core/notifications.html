@@ -1,39 +1,197 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Notifications - TakaLink</title>
-</head>
-<body>
+{% extends "core/base.html" %}
 
-    <h1>🔔 TakaLink Notifications</h1>
+{% block title %}Notifications | TakaLink{% endblock %}
 
-    {% if notifications %}
-        {% for notification in notifications %}
-            <div>
-                <h3>{{ notification.title }}</h3>
+{% block page_title %}Notifications{% endblock %}
 
-                <p>{{ notification.message }}</p>
+{% block content %}
 
-                <small>
-                    {{ notification.created_at|date:"d M Y, H:i" }}
-                </small>
+<!-- Page introduction -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-1">
+                    <i class="bi bi-bell-fill text-warning me-2"></i>
+                    Your Notifications
+                </h4>
 
-                {% if not notification.is_read %}
-                    <p><strong>Unread</strong></p>
-                {% endif %}
+                <p class="text-secondary mb-0">
+                    Stay up to date with your waste collections,
+                    reports, and Green Points.
+                </p>
             </div>
+        </div>
+    </div>
+</div>
 
-            <hr>
-        {% endfor %}
-    {% else %}
-        <p>You have no notifications yet.</p>
-    {% endif %}
 
-    <p>
-        <a href="{% url 'resident_dashboard' %}">
-            ← Back to Dashboard
+{% if notifications %}
+
+<!-- Notifications -->
+<div class="card shadow-sm">
+
+    <div class="card-header">
+
+        <h3 class="card-title">
+            <i class="bi bi-bell me-2"></i>
+            Notification History
+        </h3>
+
+        <div class="card-tools">
+
+            <span class="badge text-bg-primary">
+                {{ notifications|length }}
+                Notification{{ notifications|length|pluralize }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="card-body p-0">
+
+        <div class="list-group list-group-flush">
+
+            {% for notification in notifications %}
+
+                <div
+                    class="list-group-item
+                    {% if not notification.is_read %}
+                        bg-light
+                    {% endif %}"
+                >
+
+                    <div class="d-flex">
+
+                        <!-- Notification Icon -->
+                        <div class="me-3">
+
+                            {% if not notification.is_read %}
+
+                                <div
+                                    class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 42px; height: 42px;"
+                                >
+                                    <i class="bi bi-bell-fill"></i>
+                                </div>
+
+                            {% else %}
+
+                                <div
+                                    class="bg-secondary text-white rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 42px; height: 42px;"
+                                >
+                                    <i class="bi bi-bell"></i>
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Notification Content -->
+                        <div class="flex-grow-1">
+
+                            <div class="d-flex justify-content-between align-items-start">
+
+                                <div>
+
+                                    <h5 class="mb-1">
+
+                                        {{ notification.title }}
+
+                                        {% if not notification.is_read %}
+
+                                            <span class="badge text-bg-primary ms-2">
+                                                Unread
+                                            </span>
+
+                                        {% endif %}
+
+                                    </h5>
+
+                                </div>
+
+                                <small class="text-secondary text-nowrap ms-3">
+
+                                    {{ notification.created_at|date:"d M Y" }}
+                                    <br>
+                                    {{ notification.created_at|time:"g:i A" }}
+
+                                </small>
+
+                            </div>
+
+
+                            <p class="mb-0 text-secondary">
+
+                                {{ notification.message }}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <div class="card-footer">
+
+        <a
+            href="{% url 'resident_dashboard' %}"
+            class="btn btn-outline-secondary"
+        >
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Dashboard
         </a>
-    </p>
 
-</body>
-</html>
+    </div>
+
+</div>
+
+
+{% else %}
+
+<!-- Empty State -->
+<div class="card shadow-sm">
+
+    <div class="card-body text-center py-5">
+
+        <i
+            class="bi bi-bell-slash text-secondary"
+            style="font-size: 4rem;"
+        ></i>
+
+        <h4 class="mt-3">
+            No Notifications Yet
+        </h4>
+
+        <p class="text-secondary">
+            You have no notifications yet.
+            We'll let you know when there is an update.
+        </p>
+
+        <a
+            href="{% url 'resident_dashboard' %}"
+            class="btn btn-takalink"
+        >
+            <i class="bi bi-speedometer2 me-1"></i>
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
